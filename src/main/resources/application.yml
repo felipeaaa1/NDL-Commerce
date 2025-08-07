@@ -8,7 +8,6 @@ spring:
   #  profiles:
   #    active: hmg
   # habilitar cor no log
-  import: optional:file:.env[.properties]  # This imports your .env file
   output:
     ansi:
       enabled: ALWAYS
