@@ -1,35 +1,32 @@
 package com.ndlcommerce.adapters.persistence;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import org.springframework.data.annotation.CreatedDate;
-
 import java.time.LocalDateTime;
 import java.util.UUID;
+import lombok.Data;
+import org.springframework.data.annotation.CreatedDate;
 
 @Entity
 @Table(name = "app_user")
 @Data
-
 public class UserDataMapper {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.UUID)
+  private UUID id;
 
-    @Column(unique = true)
-    private String name;
+  @Column(unique = true)
+  private String name;
 
-    private String password;
+  private String password;
 
-    @Column(unique = true)
-    private String email;
+  @Column(unique = true)
+  private String email;
 
-    @CreatedDate
-    private LocalDateTime creationTime;
+  @CreatedDate private LocalDateTime creationTime;
 
-    public UserDataMapper(String name, String password) {
-        this.name = name;
-        this.password = password;
-    }
+  public UserDataMapper(String name, String password) {
+    this.name = name;
+    this.password = password;
+  }
 }

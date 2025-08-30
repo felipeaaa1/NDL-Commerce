@@ -12,14 +12,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/users")
 public class UserRegisterController {
 
-    private final UserInputBoundary userInput;
+  private final UserInputBoundary userInput;
 
-    public UserRegisterController(UserInputBoundary userInput) {
-        this.userInput = userInput;
-    }
+  public UserRegisterController(UserInputBoundary userInput) {
+    this.userInput = userInput;
+  }
 
-    @PostMapping
-    public UserResponseModel create(@RequestBody UserRequestModel requestModel) {
-        return userInput.create(requestModel);
-    }
+  @PostMapping
+  public UserResponseModel create(@RequestBody UserRequestModel requestModel) {
+    return userInput.create(requestModel);
+  }
 }

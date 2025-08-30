@@ -17,7 +17,7 @@ CREATE TABLE app_user (
     password VARCHAR(255) NOT NULL,
     user_type_id UUID REFERENCES user_type(id),
     created_by UUID REFERENCES app_user(id),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    created_at TIMESTAMP DEFAU2LT CURRENT_TIMESTAMP,
     updated_by UUID REFERENCES app_user(id),
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

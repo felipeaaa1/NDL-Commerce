@@ -4,5 +4,5 @@ import com.ndlcommerce.useCase.request.UserRequestModel;
 import com.ndlcommerce.useCase.request.UserResponseModel;
 
 public interface UserInputBoundary {
-    UserResponseModel create(UserRequestModel requestModel);
+  UserResponseModel create(UserRequestModel requestModel);
 }

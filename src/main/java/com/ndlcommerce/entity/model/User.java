@@ -1,11 +1,11 @@
 package com.ndlcommerce.entity.model;
 
 public interface User {
-    boolean passwordIsValid();
+  boolean passwordIsValid();
 
-    boolean nameIsValid();
+  boolean nameIsValid();
 
-    String getName();
+  String getName();
 
-    String getPassword();
+  String getPassword();
 }
