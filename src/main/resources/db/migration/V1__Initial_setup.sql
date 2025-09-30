@@ -1,19 +1,6 @@
 CREATE SCHEMA IF NOT EXISTS ecommerce;
 SET search_path TO ecommerce;
 
--- user_type
-DO $$
-BEGIN
-    IF EXISTS (SELECT 1 FROM information_schema.tables WHERE table_schema = 'ecommerce' AND table_name = 'user_type') THEN
-        RAISE NOTICE 'Já existe a tabela user_type';
-    ELSE
-        RAISE NOTICE 'Criando tabela user_type';
-        CREATE TABLE ecommerce.user_type (
-            id UUID PRIMARY KEY,
-            name VARCHAR(50) UNIQUE NOT NULL
-        );
-    END IF;
-END $$;
 
 -- app_user
 DO $$
@@ -22,12 +9,14 @@ BEGIN
         RAISE NOTICE 'Já existe a tabela app_user';
     ELSE
         RAISE NOTICE 'Criando tabela app_user';
+        CREATE TYPE user_type_enum AS ENUM ('ADMIN', 'COMMON');
+
         CREATE TABLE ecommerce.app_user (
             id UUID PRIMARY KEY,
             name VARCHAR(255) NOT NULL,
             email VARCHAR(255) UNIQUE NOT NULL,
             password VARCHAR(255) NOT NULL,
-            user_type_id UUID REFERENCES ecommerce.user_type(id),
+            user_type user_type_enum NOT NULL,
             created_by UUID REFERENCES ecommerce.app_user(id),
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             updated_by UUID REFERENCES ecommerce.app_user(id),

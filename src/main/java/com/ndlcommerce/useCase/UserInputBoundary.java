@@ -1,8 +1,11 @@
 package com.ndlcommerce.useCase;
 
-import com.ndlcommerce.useCase.request.UserRequestModel;
-import com.ndlcommerce.useCase.request.UserResponseModel;
+import com.ndlcommerce.useCase.request.UserRequestDTO;
+import com.ndlcommerce.useCase.request.UserResponseDTO;
+import java.util.List;
 
 public interface UserInputBoundary {
-  UserResponseModel create(UserRequestModel requestModel);
+  UserResponseDTO create(UserRequestDTO requestModel);
+
+  List<UserResponseDTO> list(UserRequestDTO requestModel);
 }

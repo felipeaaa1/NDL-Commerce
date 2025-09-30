@@ -1,15 +1,14 @@
 package com.ndlcommerce.adapters.web;
 
 import com.ndlcommerce.useCase.UserInputBoundary;
-import com.ndlcommerce.useCase.request.UserRequestModel;
-import com.ndlcommerce.useCase.request.UserResponseModel;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.ndlcommerce.useCase.request.UserRequestDTO;
+import com.ndlcommerce.useCase.request.UserResponseDTO;
+import java.util.List;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/users")
+// @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
 public class UserRegisterController {
 
   private final UserInputBoundary userInput;
@@ -19,7 +18,12 @@ public class UserRegisterController {
   }
 
   @PostMapping
-  public UserResponseModel create(@RequestBody UserRequestModel requestModel) {
+  public UserResponseDTO create(@RequestBody UserRequestDTO requestModel) {
     return userInput.create(requestModel);
+  }
+
+  @GetMapping
+  public List<UserResponseDTO> listUsers(@RequestBody UserRequestDTO requestModel) {
+    return userInput.list(requestModel);
   }
 }

@@ -1,5 +1,7 @@
 package com.ndlcommerce.entity.model;
 
+import com.ndlcommerce.entity.UserType;
+
 public interface User {
   boolean passwordIsValid();
 
@@ -7,5 +9,9 @@ public interface User {
 
   String getName();
 
+  String getEmail();
+
   String getPassword();
+
+  UserType getType();
 }

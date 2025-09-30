@@ -1,8 +1,10 @@
 package com.ndlcommerce.adapters.persistence;
 
 import com.ndlcommerce.useCase.UserRegisterDsGateway;
-import com.ndlcommerce.useCase.request.UserDsRequestModel;
+import com.ndlcommerce.useCase.request.UserDbRequestDTO;
+import org.springframework.stereotype.Component;
 
+@Component
 public class JpaUser implements UserRegisterDsGateway {
 
   private final JpaUserRepository repository;
@@ -17,8 +19,9 @@ public class JpaUser implements UserRegisterDsGateway {
   }
 
   @Override
-  public void save(UserDsRequestModel user) {
-    UserDataMapper entity = new UserDataMapper(user.getLogin(), user.getPassword());
+  public void save(UserDbRequestDTO user) {
+    UserDataMapper entity =
+        new UserDataMapper(user.getLogin(), user.getEmail(), user.getType(), user.getPassword());
     repository.save(entity);
   }
 }

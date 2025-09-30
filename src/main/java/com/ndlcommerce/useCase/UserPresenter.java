@@ -1,9 +1,9 @@
 package com.ndlcommerce.useCase;
 
-import com.ndlcommerce.useCase.request.UserResponseModel;
+import com.ndlcommerce.useCase.request.UserResponseDTO;
 
 public interface UserPresenter {
-  UserResponseModel prepareSuccessView(UserResponseModel user);
+  UserResponseDTO prepareSuccessView(UserResponseDTO user);
 
-  UserResponseModel prepareFailView(String error);
+  UserResponseDTO prepareFailView(String error);
 }

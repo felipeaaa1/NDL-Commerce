@@ -2,10 +2,11 @@ package com.ndlcommerce.useCase;
 
 import com.ndlcommerce.entity.factory.UserFactory;
 import com.ndlcommerce.entity.model.User;
-import com.ndlcommerce.useCase.request.UserDsRequestModel;
-import com.ndlcommerce.useCase.request.UserRequestModel;
-import com.ndlcommerce.useCase.request.UserResponseModel;
+import com.ndlcommerce.useCase.request.UserDbRequestDTO;
+import com.ndlcommerce.useCase.request.UserRequestDTO;
+import com.ndlcommerce.useCase.request.UserResponseDTO;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class UserRegisterInteractor implements UserInputBoundary {
 
@@ -21,21 +22,33 @@ public class UserRegisterInteractor implements UserInputBoundary {
   }
 
   @Override
-  public UserResponseModel create(UserRequestModel requestModel) {
+  public UserResponseDTO create(UserRequestDTO requestModel) {
     if (userDsGateway.existsByName(requestModel.getLogin())) {
       return userPresenter.prepareFailView("User already exists.");
     }
-    User user = userFactory.create(requestModel.getLogin(), requestModel.getPassword());
+    User user =
+        userFactory.create(
+            requestModel.getLogin(),
+            requestModel.getEmail(),
+            requestModel.getType(),
+            requestModel.getPassword());
     if (!user.passwordIsValid()) {
       return userPresenter.prepareFailView("User password must have more than 5 characters.");
     }
     LocalDateTime now = LocalDateTime.now();
-    UserDsRequestModel userDsModel =
-        new UserDsRequestModel(user.getName(), user.getPassword(), now);
+    UserDbRequestDTO userDsModel =
+        new UserDbRequestDTO(
+            user.getName(), user.getEmail(), user.getType(), user.getPassword(), now);
 
     userDsGateway.save(userDsModel);
 
-    UserResponseModel accountResponseModel = new UserResponseModel(user.getName(), now.toString());
+    UserResponseDTO accountResponseModel =
+        new UserResponseDTO(user.getName(), user.getEmail(), now.toString());
     return userPresenter.prepareSuccessView(accountResponseModel);
+  }
+
+  @Override
+  public List<UserResponseDTO> list(UserRequestDTO requestModel) {
+    return List.of();
   }
 }

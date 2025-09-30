@@ -1,13 +1,15 @@
 package com.ndlcommerce.useCase.request;
 
-public class UserResponseModel {
+public class UserResponseDTO {
   private String login;
+  private String email;
   private String creationTime;
 
-  public UserResponseModel() {}
+  public UserResponseDTO() {}
 
-  public UserResponseModel(String login, String creationTime) {
+  public UserResponseDTO(String login, String email, String creationTime) {
     this.login = login;
+    this.email = email;
     this.creationTime = creationTime;
   }
 

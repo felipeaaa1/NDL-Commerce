@@ -1,22 +1,36 @@
 package com.ndlcommerce.useCase.request;
 
+import com.ndlcommerce.entity.UserType;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-public class UserDsRequestModel {
+public class UserDbRequestDTO {
 
   private final String login;
+  private final String email;
+  private final UserType type;
   private final String password;
   private final LocalDateTime creationTime;
 
-  public UserDsRequestModel(String login, String password, LocalDateTime creationTime) {
+  public UserDbRequestDTO(
+      String login, String email, UserType type, String password, LocalDateTime creationTime) {
     this.login = login;
+    this.email = email;
+    this.type = type;
     this.password = password;
     this.creationTime = creationTime;
   }
 
   public String getLogin() {
     return login;
+  }
+
+  public String getEmail() {
+    return email;
+  }
+
+  public UserType getType() {
+    return type;
   }
 
   public String getPassword() {
@@ -30,10 +44,12 @@ public class UserDsRequestModel {
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
-    if (!(o instanceof UserDsRequestModel)) return false;
-    UserDsRequestModel that = (UserDsRequestModel) o;
+    if (!(o instanceof UserDbRequestDTO)) return false;
+    UserDbRequestDTO that = (UserDbRequestDTO) o;
     return Objects.equals(login, that.login)
         && Objects.equals(password, that.password)
+        && Objects.equals(type, that.type)
+        && Objects.equals(email, that.email)
         && Objects.equals(creationTime, that.creationTime);
   }
 

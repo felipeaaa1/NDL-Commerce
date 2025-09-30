@@ -1,12 +1,63 @@
 package com.ndlcommerce;
 
+import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
+import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ClassPathBeanDefinitionScanner;
+import org.springframework.core.type.classreading.MetadataReader;
+import org.springframework.core.type.classreading.MetadataReaderFactory;
+import org.springframework.core.type.filter.TypeFilter;
 
 @SpringBootApplication
 public class NdlCommerceApplication {
 
   public static void main(String[] args) {
     SpringApplication.run(NdlCommerceApplication.class, args);
+  }
+
+  // Passo 3 — Post-processor para “plugar” nosso scanner manual
+  @Bean
+  BeanFactoryPostProcessor beanFactoryPostProcessor(ApplicationContext ctx) {
+    return beanFactory -> {
+      if (ctx instanceof AnnotationConfigServletWebServerApplicationContext webCtx) {
+        genericApplicationContext((BeanDefinitionRegistry) webCtx.getBeanFactory());
+      }
+    };
+  }
+
+  // Passo 1 — Scanner manual
+  void genericApplicationContext(BeanDefinitionRegistry beanRegistry) {
+    // useDefaultFilters = false -> evita conflito com o component-scan padrão
+    ClassPathBeanDefinitionScanner scanner =
+        new ClassPathBeanDefinitionScanner(beanRegistry, false);
+
+    // Inclui “tudo que NÃO termina com Model”
+    scanner.addIncludeFilter(removeModelAndEntitiesFilter());
+
+    // Dica: limite o scan a pacotes que NÃO têm controllers para evitar duplicidade
+    // (controllers já serão achados pelo @SpringBootApplication)
+    scanner.scan(
+        "com.ndlcommerce.useCase",
+        "com.ndlcommerce.adapters.gateway",
+        "com.ndlcommerce.adapters.presenter"
+        // tinha esquecido a camada de persistencia, com isso não tinha instanciado a
+        // UserRegisterInteractor pq não tinha nenhuma classe implementando a UserRegisterDsGateway,
+        // que no caso quem ta implementando é a JpaUser.java
+        //              ,"com.ndlcommerce.adapters.persistence"
+        ,
+        "com.ndlcommerce.entity.factory"
+        // NÃO scanneie "controllers" aqui. Deixe o @SpringBootApplication encontrá-los com o
+        // @RestController
+        );
+  }
+
+  // Passo 2 — Filtro que ignora DTOs (*Model)
+  static TypeFilter removeModelAndEntitiesFilter() {
+    return (MetadataReader mr, MetadataReaderFactory mrf) ->
+        !mr.getClassMetadata().getClassName().endsWith("DTO");
   }
 }
