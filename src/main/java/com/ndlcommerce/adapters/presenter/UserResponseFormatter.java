@@ -1,12 +1,12 @@
 package com.ndlcommerce.adapters.presenter;
 
 import com.ndlcommerce.useCase.UserPresenter;
+import com.ndlcommerce.useCase.exception.BusinessException;
+import com.ndlcommerce.useCase.exception.UserAlreadyExistsException;
 import com.ndlcommerce.useCase.request.UserResponseDTO;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
-import org.springframework.web.server.ResponseStatusException;
 
 @Component
 public class UserResponseFormatter implements UserPresenter {
@@ -20,7 +20,13 @@ public class UserResponseFormatter implements UserPresenter {
 
   @Override
   public UserResponseDTO prepareFailView(String error) {
-
-    throw new ResponseStatusException(HttpStatus.CONFLICT, error);
+    if ("existsByName".equals(error)) {
+      throw new UserAlreadyExistsException("Usuário ja existe");
+    } else if ("passwordIsValid".equals(error)) {
+      throw new BusinessException(
+          "Senha inválida, senha deve ter no mínimo 5 caracteres, uma letra maiúscula e uma minuscula");
+    } else {
+      throw new RuntimeException();
+    }
   }
 }

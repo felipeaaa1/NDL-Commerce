@@ -3,6 +3,7 @@ package com.ndlcommerce.adapters.web;
 import com.ndlcommerce.useCase.UserInputBoundary;
 import com.ndlcommerce.useCase.request.UserRequestDTO;
 import com.ndlcommerce.useCase.request.UserResponseDTO;
+import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,7 +19,7 @@ public class UserRegisterController {
   }
 
   @PostMapping
-  public UserResponseDTO create(@RequestBody UserRequestDTO requestModel) {
+  public UserResponseDTO create(@Valid @RequestBody UserRequestDTO requestModel) {
     return userInput.create(requestModel);
   }
 

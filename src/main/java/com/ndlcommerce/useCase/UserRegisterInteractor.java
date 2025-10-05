@@ -1,5 +1,6 @@
 package com.ndlcommerce.useCase;
 
+import com.ndlcommerce.adapters.persistence.UserDataMapper;
 import com.ndlcommerce.entity.factory.UserFactory;
 import com.ndlcommerce.entity.model.User;
 import com.ndlcommerce.useCase.request.UserDbRequestDTO;
@@ -24,7 +25,7 @@ public class UserRegisterInteractor implements UserInputBoundary {
   @Override
   public UserResponseDTO create(UserRequestDTO requestModel) {
     if (userDsGateway.existsByName(requestModel.getLogin())) {
-      return userPresenter.prepareFailView("User already exists.");
+      return userPresenter.prepareFailView("existsByName");
     }
     User user =
         userFactory.create(
@@ -33,7 +34,7 @@ public class UserRegisterInteractor implements UserInputBoundary {
             requestModel.getType(),
             requestModel.getPassword());
     if (!user.passwordIsValid()) {
-      return userPresenter.prepareFailView("User password must have more than 5 characters.");
+      return userPresenter.prepareFailView("passwordIsValid");
     }
     LocalDateTime now = LocalDateTime.now();
     UserDbRequestDTO userDsModel =
@@ -49,6 +50,25 @@ public class UserRegisterInteractor implements UserInputBoundary {
 
   @Override
   public List<UserResponseDTO> list(UserRequestDTO requestModel) {
-    return List.of();
+    User user =
+        userFactory.create(
+            requestModel.getLogin(),
+            requestModel.getEmail(),
+            requestModel.getType(),
+            requestModel.getPassword());
+    UserDbRequestDTO userDsModel =
+        new UserDbRequestDTO(
+            user.getName(),
+            user.getEmail(),
+            user.getType(),
+            user.getPassword(),
+            LocalDateTime.now());
+    UserDataMapper first = userDsGateway.list(userDsModel).getFirst();
+
+    UserResponseDTO accountResponseModel =
+        new UserResponseDTO(first.getName(), first.getEmail(), first.getCreationTime().toString());
+
+    //    return userPresenter.prepareSuccessView(accountResponseModel);
+    return null;
   }
 }

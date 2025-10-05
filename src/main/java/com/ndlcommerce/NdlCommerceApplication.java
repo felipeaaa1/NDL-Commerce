@@ -58,6 +58,7 @@ public class NdlCommerceApplication {
   // Passo 2 — Filtro que ignora DTOs (*Model)
   static TypeFilter removeModelAndEntitiesFilter() {
     return (MetadataReader mr, MetadataReaderFactory mrf) ->
-        !mr.getClassMetadata().getClassName().endsWith("DTO");
+        (!mr.getClassMetadata().getClassName().endsWith("DTO")
+            && !mr.getClassMetadata().getClassName().toLowerCase().contains("exception"));
   }
 }
