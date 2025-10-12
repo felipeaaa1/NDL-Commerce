@@ -87,7 +87,9 @@ public class GlobalExceptionHandler {
         "🎉 Parabeeens🎉 você achou um erro não tratado! Por gentileza entre em contato com a mensagem e causa do erro: "
             + e.getMessage()
             + " | causa: "
-            + e.getCause(),
+            + e.getCause()
+            + "localização: "
+            + e.getLocalizedMessage(),
         List.of());
   }
 }

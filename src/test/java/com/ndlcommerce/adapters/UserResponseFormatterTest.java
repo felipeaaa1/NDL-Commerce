@@ -19,7 +19,7 @@ public class UserResponseFormatterTest {
   @Test
   void givenDateAnd3HourTime_whenPrepareSuccessView_thenReturnOnly3HourTime() {
     UserResponseDTO modelResponse =
-        new UserResponseDTO("baeldung", "baeldung", "2020-12-20T03:00:00.000");
+        new UserResponseDTO("baeldung", "baeldung", "COMMON", "2020-12-20T03:00:00.000");
     UserResponseDTO formattedResponse = userResponseFormatter.prepareSuccessView(modelResponse);
 
     assertThat(formattedResponse.getCreationTime()).isEqualTo("03:00:00");

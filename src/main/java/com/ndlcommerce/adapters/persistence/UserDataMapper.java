@@ -5,10 +5,10 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.UUID;
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.type.SqlTypes;
-import org.springframework.data.annotation.CreatedDate;
 
 @Entity
 @Table(name = "app_user")
@@ -32,7 +32,7 @@ public class UserDataMapper {
   @Column(unique = true)
   private String email;
 
-  @CreatedDate
+  @CreationTimestamp
   @Column(name = "created_at")
   private LocalDateTime creationTime;
 
@@ -46,4 +46,14 @@ public class UserDataMapper {
     this.type = type;
     this.password = password;
   }
+
+  public UserDataMapper(String name, String email, UserType type) {
+    this.name = name;
+    this.email = email;
+    this.type = type;
+  }
+
+  // this is needed by JPA to instantiate objects, using proxy mechanisms, and performing seamless
+  // mapping between entities and database tables
+  public UserDataMapper() {}
 }

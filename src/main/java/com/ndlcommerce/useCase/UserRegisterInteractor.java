@@ -4,6 +4,7 @@ import com.ndlcommerce.adapters.persistence.UserDataMapper;
 import com.ndlcommerce.entity.factory.UserFactory;
 import com.ndlcommerce.entity.model.User;
 import com.ndlcommerce.useCase.request.UserDbRequestDTO;
+import com.ndlcommerce.useCase.request.UserFilterDTO;
 import com.ndlcommerce.useCase.request.UserRequestDTO;
 import com.ndlcommerce.useCase.request.UserResponseDTO;
 import java.time.LocalDateTime;
@@ -44,31 +45,30 @@ public class UserRegisterInteractor implements UserInputBoundary {
     userDsGateway.save(userDsModel);
 
     UserResponseDTO accountResponseModel =
-        new UserResponseDTO(user.getName(), user.getEmail(), now.toString());
+        new UserResponseDTO(
+            user.getName(), user.getEmail(), user.getType().toString(), now.toString());
     return userPresenter.prepareSuccessView(accountResponseModel);
   }
 
   @Override
-  public List<UserResponseDTO> list(UserRequestDTO requestModel) {
-    User user =
-        userFactory.create(
-            requestModel.getLogin(),
-            requestModel.getEmail(),
-            requestModel.getType(),
-            requestModel.getPassword());
-    UserDbRequestDTO userDsModel =
+  public List<UserResponseDTO> list(UserFilterDTO userFilterDTO, int page, int size) {
+
+    UserDbRequestDTO userDbRequestDTO =
         new UserDbRequestDTO(
-            user.getName(),
-            user.getEmail(),
-            user.getType(),
-            user.getPassword(),
-            LocalDateTime.now());
-    UserDataMapper first = userDsGateway.list(userDsModel).getFirst();
+            userFilterDTO.getLogin(), userFilterDTO.getEmail(), userFilterDTO.getType());
 
-    UserResponseDTO accountResponseModel =
-        new UserResponseDTO(first.getName(), first.getEmail(), first.getCreationTime().toString());
+    List<UserDataMapper> list = userDsGateway.list(userDbRequestDTO);
+    List<UserResponseDTO> responseList =
+        list.stream()
+            .map(
+                user ->
+                    new UserResponseDTO(
+                        user.getName(),
+                        user.getEmail(),
+                        user.getType().toString(),
+                        user.getCreationTime().toString()))
+            .toList();
 
-    //    return userPresenter.prepareSuccessView(accountResponseModel);
-    return null;
+    return userPresenter.prepareListSuccessView(responseList);
   }
 }

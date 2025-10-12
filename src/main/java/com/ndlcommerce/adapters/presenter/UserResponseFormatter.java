@@ -6,6 +6,7 @@ import com.ndlcommerce.useCase.exception.UserAlreadyExistsException;
 import com.ndlcommerce.useCase.request.UserResponseDTO;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -28,5 +29,10 @@ public class UserResponseFormatter implements UserPresenter {
     } else {
       throw new RuntimeException();
     }
+  }
+
+  @Override
+  public List<UserResponseDTO> prepareListSuccessView(List<UserResponseDTO> list) {
+    return list;
   }
 }

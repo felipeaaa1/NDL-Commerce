@@ -9,8 +9,8 @@ public class UserDbRequestDTO {
   private final String login;
   private final String email;
   private final UserType type;
-  private final String password;
-  private final LocalDateTime creationTime;
+  private String password;
+  private LocalDateTime creationTime;
 
   public UserDbRequestDTO(
       String login, String email, UserType type, String password, LocalDateTime creationTime) {
@@ -19,6 +19,12 @@ public class UserDbRequestDTO {
     this.type = type;
     this.password = password;
     this.creationTime = creationTime;
+  }
+
+  public UserDbRequestDTO(String login, String email, UserType type) {
+    this.login = login;
+    this.email = email;
+    this.type = type;
   }
 
   public String getLogin() {
