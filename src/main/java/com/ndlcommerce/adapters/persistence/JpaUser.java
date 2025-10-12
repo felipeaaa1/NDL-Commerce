@@ -39,7 +39,6 @@ public class JpaUser implements UserRegisterDsGateway {
     UserDataMapper probe =
         new UserDataMapper(requestDTO.getLogin(), requestDTO.getEmail(), requestDTO.getType());
 
-    //    TODO: arrumar os filtros da pesquisa
     ExampleMatcher matcher =
         ExampleMatcher.matching()
             .withIgnoreCase()

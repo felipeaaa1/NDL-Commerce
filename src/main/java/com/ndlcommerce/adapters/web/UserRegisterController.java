@@ -28,7 +28,7 @@ public class UserRegisterController {
 
   @GetMapping
   public ResponseEntity<?> listUsers(
-      UserFilterDTO filter,
+      @RequestBody UserFilterDTO filter,
       @RequestParam(defaultValue = "0") int page,
       @RequestParam(defaultValue = "10") int size) {
     var result = userInput.list(filter, page, size);
