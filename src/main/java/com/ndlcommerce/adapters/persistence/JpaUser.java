@@ -3,6 +3,7 @@ package com.ndlcommerce.adapters.persistence;
 import com.ndlcommerce.useCase.UserRegisterDsGateway;
 import com.ndlcommerce.useCase.request.UserDbRequestDTO;
 import java.util.List;
+import java.util.UUID;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -48,5 +49,10 @@ public class JpaUser implements UserRegisterDsGateway {
     Example<UserDataMapper> example = Example.of(probe, matcher);
 
     return repository.findAll(example);
+  }
+
+  @Override
+  public UserDataMapper getById(UUID userId) {
+    return repository.getById(userId);
   }
 }

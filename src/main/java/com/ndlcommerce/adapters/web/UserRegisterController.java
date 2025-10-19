@@ -4,6 +4,7 @@ import com.ndlcommerce.useCase.UserInputBoundary;
 import com.ndlcommerce.useCase.request.UserFilterDTO;
 import com.ndlcommerce.useCase.request.UserRequestDTO;
 import jakarta.validation.Valid;
+import java.util.UUID;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +33,12 @@ public class UserRegisterController {
       @RequestParam(defaultValue = "0") int page,
       @RequestParam(defaultValue = "10") int size) {
     var result = userInput.list(filter, page, size);
+    return ResponseEntity.ok().body(result);
+  }
+
+  @GetMapping("{id}")
+  public ResponseEntity<?> getUserById(@PathVariable("id") String id) {
+    var result = userInput.getById(UUID.fromString(id));
     return ResponseEntity.ok().body(result);
   }
 }

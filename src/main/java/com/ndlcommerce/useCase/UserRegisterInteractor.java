@@ -9,6 +9,7 @@ import com.ndlcommerce.useCase.request.UserRequestDTO;
 import com.ndlcommerce.useCase.request.UserResponseDTO;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 public class UserRegisterInteractor implements UserInputBoundary {
 
@@ -70,5 +71,20 @@ public class UserRegisterInteractor implements UserInputBoundary {
             .toList();
 
     return userPresenter.prepareListSuccessView(responseList);
+  }
+
+  @Override
+  public UserResponseDTO getById(UUID userId) {
+
+    UserDataMapper user = userDsGateway.getById(userId);
+
+    UserResponseDTO accountResponseModel =
+        new UserResponseDTO(
+            user.getName(),
+            user.getEmail(),
+            user.getType().toString(),
+            user.getCreationTime().toString());
+
+    return userPresenter.prepareSuccessView(accountResponseModel);
   }
 }
