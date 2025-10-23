@@ -6,9 +6,17 @@ import com.ndlcommerce.adapters.web.dto.ErrorFieldDTO;
 import com.ndlcommerce.adapters.web.dto.ErrorResponseDTO;
 import com.ndlcommerce.useCase.exception.BusinessException;
 import com.ndlcommerce.useCase.exception.UserAlreadyExistsException;
+
+import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
+
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -77,6 +85,45 @@ public class GlobalExceptionHandler {
 
     return new ErrorResponseDTO(HttpStatus.NOT_ACCEPTABLE.value(), message, java.util.List.of());
   }
+
+  @ExceptionHandler(IllegalArgumentException.class)
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  public ErrorResponseDTO handleInvalidUUID(IllegalArgumentException e) {
+    if (e.getMessage().contains("Invalid UUID string")) {
+      return ErrorResponseDTO.badRequest(
+          "ID com formato inesperado. Era esperado um UUID (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)");
+    }
+    return ErrorResponseDTO.withErrors(e.getMessage(), List.of());
+  }
+
+  @ResponseStatus(HttpStatus.NOT_FOUND)
+  @ExceptionHandler(NoSuchElementException.class)
+  public ErrorResponseDTO handleNoSuchElementException(NoSuchElementException e) {
+    System.err.println(e.getMessage());
+    return new ErrorResponseDTO(
+        HttpStatus.NOT_FOUND.value(), "Elemento com id fornecido não encontrado", List.of());
+  }
+
+
+  @ExceptionHandler({ConstraintViolationException.class, DataIntegrityViolationException.class})
+  @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+  public ErrorResponseDTO handleValidationConstraintViolation(ConstraintViolationException e) {
+    System.err.println(e.getMessage());
+
+    List<ErrorFieldDTO> errors = e.getConstraintViolations().stream()
+            .map(v -> new ErrorFieldDTO(
+                    v.getPropertyPath().toString(),
+                    v.getMessage()))
+            .collect(Collectors.toList());
+
+    return new ErrorResponseDTO(
+            HttpStatus.UNPROCESSABLE_ENTITY.value(),
+            "Erro de validação",
+            errors
+    );
+  }
+
+
 
   @ExceptionHandler(RuntimeException.class)
   @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)

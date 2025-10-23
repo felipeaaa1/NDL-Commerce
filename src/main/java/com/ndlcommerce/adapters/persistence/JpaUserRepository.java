@@ -5,4 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface JpaUserRepository extends JpaRepository<UserDataMapper, UUID> {
   Boolean existsByName(String name);
+  boolean existsByNameAndIdNot(String name, UUID id);
+
 }

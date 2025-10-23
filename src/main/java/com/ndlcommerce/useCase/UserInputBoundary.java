@@ -12,4 +12,6 @@ public interface UserInputBoundary {
   List<?> list(UserFilterDTO requestModel, int page, int size);
 
   UserResponseDTO getById(UUID userId);
+
+  UserResponseDTO updateUser(UUID userId, UserRequestDTO requestModel);
 }

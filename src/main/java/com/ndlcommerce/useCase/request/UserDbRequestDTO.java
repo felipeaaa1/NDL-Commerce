@@ -12,13 +12,11 @@ public class UserDbRequestDTO {
   private String password;
   private LocalDateTime creationTime;
 
-  public UserDbRequestDTO(
-      String login, String email, UserType type, String password, LocalDateTime creationTime) {
+  public UserDbRequestDTO(String login, String email, UserType type, String password) {
     this.login = login;
     this.email = email;
     this.type = type;
     this.password = password;
-    this.creationTime = creationTime;
   }
 
   public UserDbRequestDTO(String login, String email, UserType type) {

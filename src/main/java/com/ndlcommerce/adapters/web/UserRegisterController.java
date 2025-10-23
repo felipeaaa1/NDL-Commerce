@@ -41,4 +41,10 @@ public class UserRegisterController {
     var result = userInput.getById(UUID.fromString(id));
     return ResponseEntity.ok().body(result);
   }
+
+  @PutMapping("{id}")
+  public ResponseEntity<?> updateUser(@PathVariable("id") String id, @RequestBody UserRequestDTO requestModel) {
+    var result = userInput.updateUser(UUID.fromString(id), requestModel);
+    return ResponseEntity.ok().body(result);
+  }
 }
