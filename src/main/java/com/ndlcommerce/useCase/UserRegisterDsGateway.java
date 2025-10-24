@@ -9,6 +9,8 @@ import java.util.UUID;
 public interface UserRegisterDsGateway {
   boolean existsByName(String name);
 
+  boolean existsByEmail(String email);
+
   boolean existsByNameAndNotId(String name, UUID id);
 
   UserDataMapper save(UserDbRequestDTO requestDTO);
@@ -18,4 +20,8 @@ public interface UserRegisterDsGateway {
   Optional<UserDataMapper> getById(UUID userId);
 
   UserDataMapper update(UUID uuid, UserDbRequestDTO userDsModel);
+
+  boolean existsByEmailAndNotId(String email, UUID userId);
+
+  void delete(UserDataMapper userDataMapper);
 }

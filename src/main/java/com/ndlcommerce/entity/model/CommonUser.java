@@ -19,7 +19,7 @@ public class CommonUser implements User {
 
   @Override
   public boolean nameIsValid() {
-    return name != null && name.length() > 4;
+    return name != null && name.length() >= 4;
   }
 
   @Override

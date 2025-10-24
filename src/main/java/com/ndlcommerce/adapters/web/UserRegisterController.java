@@ -3,6 +3,7 @@ package com.ndlcommerce.adapters.web;
 import com.ndlcommerce.useCase.UserInputBoundary;
 import com.ndlcommerce.useCase.request.UserFilterDTO;
 import com.ndlcommerce.useCase.request.UserRequestDTO;
+import com.ndlcommerce.useCase.request.UserResponseDTO;
 import jakarta.validation.Valid;
 import java.util.UUID;
 import org.springframework.http.HttpStatus;
@@ -43,8 +44,15 @@ public class UserRegisterController {
   }
 
   @PutMapping("{id}")
-  public ResponseEntity<?> updateUser(@PathVariable("id") String id, @RequestBody UserRequestDTO requestModel) {
+  public ResponseEntity<?> updateUser(
+      @PathVariable("id") String id, @RequestBody UserRequestDTO requestModel) {
     var result = userInput.updateUser(UUID.fromString(id), requestModel);
     return ResponseEntity.ok().body(result);
+  }
+
+  @DeleteMapping("{id}")
+  public ResponseEntity<?> deleteUser(@PathVariable("id") String id) {
+    UserResponseDTO userResponseDTO = userInput.deleteUser(UUID.fromString(id));
+    return ResponseEntity.ok().body(userResponseDTO);
   }
 }

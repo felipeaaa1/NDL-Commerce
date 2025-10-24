@@ -7,7 +7,6 @@ import com.ndlcommerce.useCase.request.UserDbRequestDTO;
 import com.ndlcommerce.useCase.request.UserFilterDTO;
 import com.ndlcommerce.useCase.request.UserRequestDTO;
 import com.ndlcommerce.useCase.request.UserResponseDTO;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -30,6 +29,9 @@ public class UserRegisterInteractor implements UserInputBoundary {
     if (userDsGateway.existsByName(requestModel.getLogin())) {
       return userPresenter.prepareFailView("existsByName");
     }
+    if (userDsGateway.existsByEmail(requestModel.getEmail())) {
+      return userPresenter.prepareFailView("existsByEmail");
+    }
     User user =
         userFactory.create(
             requestModel.getLogin(),
@@ -39,6 +41,9 @@ public class UserRegisterInteractor implements UserInputBoundary {
     if (!user.passwordIsValid()) {
       return userPresenter.prepareFailView("passwordIsValid");
     }
+    if (!user.nameIsValid()) {
+      return userPresenter.prepareFailView("nameIsValid");
+    }
     UserDbRequestDTO userDsModel =
         new UserDbRequestDTO(user.getName(), user.getEmail(), user.getType(), user.getPassword());
 
@@ -46,7 +51,10 @@ public class UserRegisterInteractor implements UserInputBoundary {
 
     UserResponseDTO accountResponseModel =
         new UserResponseDTO(
-                save.getName(), save.getEmail(), save.getType().toString(), save.getCreationTime().toString());
+            save.getName(),
+            save.getEmail(),
+            save.getType().toString(),
+            save.getCreationTime().toString());
     return userPresenter.prepareSuccessView(accountResponseModel);
   }
 
@@ -75,20 +83,19 @@ public class UserRegisterInteractor implements UserInputBoundary {
   @Override
   public UserResponseDTO getById(UUID userId) {
 
-      Optional<UserDataMapper> opt = userDsGateway.getById(userId);
+    Optional<UserDataMapper> opt = userDsGateway.getById(userId);
 
-      if (opt.isEmpty())
-      {
-    return userPresenter.prepareFailView("NotFound");}
-      UserDataMapper user = opt.get();
-      UserResponseDTO accountResponseModel =
-          new UserResponseDTO(
-              user.getName(),
-              user.getEmail(),
-              user.getType().toString(),
-              user.getCreationTime().toString());
-      return userPresenter.prepareSuccessView(accountResponseModel);
-
+    if (opt.isEmpty()) {
+      return userPresenter.prepareFailView("NotFound");
+    }
+    UserDataMapper user = opt.get();
+    UserResponseDTO accountResponseModel =
+        new UserResponseDTO(
+            user.getName(),
+            user.getEmail(),
+            user.getType().toString(),
+            user.getCreationTime().toString());
+    return userPresenter.prepareSuccessView(accountResponseModel);
   }
 
   @Override
@@ -96,28 +103,48 @@ public class UserRegisterInteractor implements UserInputBoundary {
     if (userDsGateway.existsByNameAndNotId(requestModel.getLogin(), userId)) {
       return userPresenter.prepareFailView("existsByName");
     }
+    if (userDsGateway.existsByEmailAndNotId(requestModel.getEmail(), userId)) {
+      return userPresenter.prepareFailView("existsByEmail");
+    }
     User user =
-            userFactory.create(
-                    requestModel.getLogin(),
-                    requestModel.getEmail(),
-                    requestModel.getType(),
-                    requestModel.getPassword());
+        userFactory.create(
+            requestModel.getLogin(),
+            requestModel.getEmail(),
+            requestModel.getType(),
+            requestModel.getPassword());
 
-    if(!user.nameIsValid()){
+    if (!user.nameIsValid()) {
       return userPresenter.prepareFailView("nameIsValid");
     }
 
     UserDbRequestDTO userDsModel =
-            new UserDbRequestDTO(user.getName(), user.getEmail(), user.getType());
+        new UserDbRequestDTO(user.getName(), user.getEmail(), user.getType());
 
     UserDataMapper update = userDsGateway.update(userId, userDsModel);
 
-    if (update == null){
-      return userPresenter.prepareFailView("NotFound");}
+    if (update == null) {
+      return userPresenter.prepareFailView("NotFound");
+    }
 
     UserResponseDTO accountResponseModel =
-            new UserResponseDTO(
-                    update.getName(), update.getEmail(), update.getType().toString(), update.getCreationTime().toString());
+        new UserResponseDTO(
+            update.getName(),
+            update.getEmail(),
+            update.getType().toString(),
+            update.getCreationTime().toString());
     return userPresenter.prepareSuccessView(accountResponseModel);
+  }
+
+  @Override
+  public UserResponseDTO deleteUser(UUID uuid) {
+
+    Optional<UserDataMapper> opt = userDsGateway.getById(uuid);
+
+    if (opt.isEmpty()) {
+      return userPresenter.prepareFailView("NotFound");
+    }
+
+    userDsGateway.delete(opt.get());
+    return userPresenter.prepareSuccessView(null);
   }
 }

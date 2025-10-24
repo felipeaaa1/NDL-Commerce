@@ -14,4 +14,6 @@ public interface UserInputBoundary {
   UserResponseDTO getById(UUID userId);
 
   UserResponseDTO updateUser(UUID userId, UserRequestDTO requestModel);
+
+  UserResponseDTO deleteUser(UUID uuid);
 }

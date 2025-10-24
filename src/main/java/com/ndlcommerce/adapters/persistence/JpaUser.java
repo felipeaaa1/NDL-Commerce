@@ -27,6 +27,11 @@ public class JpaUser implements UserRegisterDsGateway {
   }
 
   @Override
+  public boolean existsByEmail(String email) {
+    return repository.existsByEmail(email);
+  }
+
+  @Override
   public boolean existsByNameAndNotId(String name, UUID id) {
     return repository.existsByNameAndIdNot(name, id);
   }
@@ -66,13 +71,24 @@ public class JpaUser implements UserRegisterDsGateway {
   public UserDataMapper update(UUID uuid, UserDbRequestDTO userDsModel) {
     Optional<UserDataMapper> byId = repository.findById(uuid);
 
-    if (repository.findById(uuid).isEmpty()){
+    if (repository.findById(uuid).isEmpty()) {
       return null;
     }
     UserDataMapper user = byId.get();
     user.setName(userDsModel.getLogin() == null ? user.getName() : userDsModel.getLogin());
-    user.setType(userDsModel.getType().toString().isEmpty() ? user.getType(): userDsModel.getType());
-    user.setEmail(userDsModel.getEmail() == null ? user.getEmail(): userDsModel.getEmail());
+    user.setType(
+        userDsModel.getType().toString().isEmpty() ? user.getType() : userDsModel.getType());
+    user.setEmail(userDsModel.getEmail() == null ? user.getEmail() : userDsModel.getEmail());
     return repository.save(user);
+  }
+
+  @Override
+  public boolean existsByEmailAndNotId(String email, UUID userId) {
+    return repository.existsByEmailAndIdNot(email, userId);
+  }
+
+  @Override
+  public void delete(UserDataMapper userDataMapper) {
+    repository.delete(userDataMapper);
   }
 }
