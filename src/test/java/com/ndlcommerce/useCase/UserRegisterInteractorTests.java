@@ -32,12 +32,12 @@ public class UserRegisterInteractorTests {
   void givenBaeldungUserAndAa123456Password_whenCreate_thenSaveItAndPrepareSuccessView() {
     User user = new CommonUser("baeldung", "baeldung", UserType.COMMON, "Senha1234");
     UserRequestDTO userRequestDTO =
-        new UserRequestDTO(user.getName(), user.getType(), user.getPassword());
+        new UserRequestDTO(user.getLogin(), user.getType(), user.getPassword());
 
     when(userFactory.create(anyString(), anyString(), any(), anyString()))
         .thenReturn(
-            new CommonUser(user.getName(), user.getEmail(), user.getType(), user.getPassword()));
-    when(userDsGateway.existsByName(anyString())).thenReturn(false);
+            new CommonUser(user.getLogin(), user.getEmail(), user.getType(), user.getPassword()));
+    when(userDsGateway.existsByLogin(anyString())).thenReturn(false);
 
     interactor.create(userRequestDTO);
 

@@ -6,13 +6,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 public interface JpaUserRepository extends JpaRepository<UserDataMapper, UUID> {
 
-  UserDetails findByName(String name);
+  UserDetails findByLogin(String name);
 
-  Boolean existsByName(String name);
+  Boolean existsByLogin(String name);
 
   Boolean existsByEmail(String name);
 
-  boolean existsByNameAndIdNot(String name, UUID id);
+  boolean existsByLoginAndIdNot(String name, UUID id);
 
   boolean existsByEmailAndIdNot(String email, UUID userId);
 }

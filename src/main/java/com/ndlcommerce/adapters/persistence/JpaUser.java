@@ -22,8 +22,8 @@ public class JpaUser implements UserRegisterDsGateway {
   }
 
   @Override
-  public boolean existsByName(String name) {
-    return repository.existsByName(name);
+  public boolean existsByLogin(String name) {
+    return repository.existsByLogin(name);
   }
 
   @Override
@@ -32,14 +32,13 @@ public class JpaUser implements UserRegisterDsGateway {
   }
 
   @Override
-  public boolean existsByNameAndNotId(String name, UUID id) {
-    return repository.existsByNameAndIdNot(name, id);
+  public boolean existsByLoginAndNotId(String name, UUID id) {
+    return repository.existsByLoginAndIdNot(name, id);
   }
 
   @Override
   public UserDataMapper save(UserDbRequestDTO user) {
 
-    //    TODO: necessário validar a senha na volta.
     UserDataMapper entity =
         new UserDataMapper(
             user.getLogin(), user.getEmail(), user.getType(), encoder.encode(user.getPassword()));
@@ -55,6 +54,15 @@ public class JpaUser implements UserRegisterDsGateway {
         ExampleMatcher.matching()
             .withIgnoreCase()
             .withIgnoreNullValues()
+            .withIgnorePaths(
+                "id",
+                "password",
+                "creationTime",
+                "updateTime",
+                "enabled",
+                "accountNonLocked",
+                "accountNonExpired",
+                "credentialsNonExpired")
             .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
 
     Example<UserDataMapper> example = Example.of(probe, matcher);
@@ -75,7 +83,7 @@ public class JpaUser implements UserRegisterDsGateway {
       return null;
     }
     UserDataMapper user = byId.get();
-    user.setName(userDsModel.getLogin() == null ? user.getName() : userDsModel.getLogin());
+    user.setLogin(userDsModel.getLogin() == null ? user.getLogin() : userDsModel.getLogin());
     user.setType(
         userDsModel.getType().toString().isEmpty() ? user.getType() : userDsModel.getType());
     user.setEmail(userDsModel.getEmail() == null ? user.getEmail() : userDsModel.getEmail());

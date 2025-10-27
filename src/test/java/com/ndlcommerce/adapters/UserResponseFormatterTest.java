@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.ndlcommerce.adapters.presenter.UserResponseFormatter;
 import com.ndlcommerce.useCase.request.UserResponseDTO;
+import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -19,7 +20,8 @@ public class UserResponseFormatterTest {
   @Test
   void givenDateAnd3HourTime_whenPrepareSuccessView_thenReturnOnly3HourTime() {
     UserResponseDTO modelResponse =
-        new UserResponseDTO("baeldung", "baeldung", "COMMON", "2020-12-20T03:00:00.000");
+        new UserResponseDTO(
+            UUID.randomUUID(), "baeldung", "baeldung", "COMMON", "2020-12-20T03:00:00.000");
     UserResponseDTO formattedResponse = userResponseFormatter.prepareSuccessView(modelResponse);
 
     assertThat(formattedResponse.getCreationTime()).isEqualTo("03:00:00");

@@ -5,9 +5,9 @@ import com.ndlcommerce.entity.UserType;
 public interface User {
   boolean passwordIsValid();
 
-  boolean nameIsValid();
+  boolean loginIsValid();
 
-  String getName();
+  String getLogin();
 
   String getEmail();
 

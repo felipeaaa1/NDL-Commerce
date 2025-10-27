@@ -34,8 +34,8 @@ public class UserFilterDTO {
 
   public UserFilterDTO() {}
 
-  public UserFilterDTO(String name, String email, String type) {
-    this.login = name;
+  public UserFilterDTO(String login, String email, String type) {
+    this.login = login;
     this.email = email;
     this.type = UserType.valueOf(type);
   }

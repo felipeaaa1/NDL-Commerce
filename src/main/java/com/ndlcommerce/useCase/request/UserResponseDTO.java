@@ -1,6 +1,9 @@
 package com.ndlcommerce.useCase.request;
 
+import java.util.UUID;
+
 public class UserResponseDTO {
+  private UUID uuid;
   private String login;
   private String email;
   private String type;
@@ -8,11 +11,16 @@ public class UserResponseDTO {
 
   public UserResponseDTO() {}
 
-  public UserResponseDTO(String login, String email, String type, String creationTime) {
+  public UserResponseDTO(UUID uuid, String login, String email, String type, String creationTime) {
+    this.uuid = uuid;
     this.login = login;
     this.email = email;
     this.type = type;
     this.creationTime = creationTime;
+  }
+
+  public UUID getUUID() {
+    return uuid;
   }
 
   public String getLogin() {

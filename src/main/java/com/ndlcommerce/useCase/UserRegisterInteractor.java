@@ -26,7 +26,7 @@ public class UserRegisterInteractor implements UserInputBoundary {
 
   @Override
   public UserResponseDTO create(UserRequestDTO requestModel) {
-    if (userDsGateway.existsByName(requestModel.getLogin())) {
+    if (userDsGateway.existsByLogin(requestModel.getLogin())) {
       return userPresenter.prepareFailView("existsByName");
     }
     if (userDsGateway.existsByEmail(requestModel.getEmail())) {
@@ -41,17 +41,18 @@ public class UserRegisterInteractor implements UserInputBoundary {
     if (!user.passwordIsValid()) {
       return userPresenter.prepareFailView("passwordIsValid");
     }
-    if (!user.nameIsValid()) {
+    if (!user.loginIsValid()) {
       return userPresenter.prepareFailView("nameIsValid");
     }
     UserDbRequestDTO userDsModel =
-        new UserDbRequestDTO(user.getName(), user.getEmail(), user.getType(), user.getPassword());
+        new UserDbRequestDTO(user.getLogin(), user.getEmail(), user.getType(), user.getPassword());
 
     UserDataMapper save = userDsGateway.save(userDsModel);
 
     UserResponseDTO accountResponseModel =
         new UserResponseDTO(
-            save.getName(),
+            save.getId(),
+            save.getLogin(),
             save.getEmail(),
             save.getType().toString(),
             save.getCreationTime().toString());
@@ -71,7 +72,8 @@ public class UserRegisterInteractor implements UserInputBoundary {
             .map(
                 user ->
                     new UserResponseDTO(
-                        user.getName(),
+                        user.getId(),
+                        user.getLogin(),
                         user.getEmail(),
                         user.getType().toString(),
                         user.getCreationTime().toString()))
@@ -91,7 +93,8 @@ public class UserRegisterInteractor implements UserInputBoundary {
     UserDataMapper user = opt.get();
     UserResponseDTO accountResponseModel =
         new UserResponseDTO(
-            user.getName(),
+            user.getId(),
+            user.getLogin(),
             user.getEmail(),
             user.getType().toString(),
             user.getCreationTime().toString());
@@ -101,7 +104,7 @@ public class UserRegisterInteractor implements UserInputBoundary {
   //  TODO: fix updated_at and created_at columns
   @Override
   public UserResponseDTO updateUser(UUID userId, UserRequestDTO requestModel) {
-    if (userDsGateway.existsByNameAndNotId(requestModel.getLogin(), userId)) {
+    if (userDsGateway.existsByLoginAndNotId(requestModel.getLogin(), userId)) {
       return userPresenter.prepareFailView("existsByName");
     }
     if (userDsGateway.existsByEmailAndNotId(requestModel.getEmail(), userId)) {
@@ -114,12 +117,12 @@ public class UserRegisterInteractor implements UserInputBoundary {
             requestModel.getType(),
             requestModel.getPassword());
 
-    if (!user.nameIsValid()) {
+    if (!user.loginIsValid()) {
       return userPresenter.prepareFailView("nameIsValid");
     }
 
     UserDbRequestDTO userDsModel =
-        new UserDbRequestDTO(user.getName(), user.getEmail(), user.getType());
+        new UserDbRequestDTO(user.getLogin(), user.getEmail(), user.getType());
 
     UserDataMapper update = userDsGateway.update(userId, userDsModel);
 
@@ -129,7 +132,8 @@ public class UserRegisterInteractor implements UserInputBoundary {
 
     UserResponseDTO accountResponseModel =
         new UserResponseDTO(
-            update.getName(),
+            update.getId(),
+            update.getLogin(),
             update.getEmail(),
             update.getType().toString(),
             update.getCreationTime().toString());

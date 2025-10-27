@@ -17,7 +17,7 @@ class CommonUserTest {
   void givenValidUser_whenPasswordAndNameAreValid_thenIsTrue() {
     User user = new CommonUser("user1", "user1", UserType.COMMON, "Aabcdef");
     assertThat(user.passwordIsValid()).isTrue();
-    assertThat(user.nameIsValid()).isTrue();
+    assertThat(user.loginIsValid()).isTrue();
   }
 
   @Test
@@ -35,6 +35,6 @@ class CommonUserTest {
   @Test
   void givenShortUser_whenUserIsNotValid_thenIsFalse() {
     User user = new CommonUser("X", "X", UserType.COMMON, "Aa12345");
-    assertThat(user.nameIsValid()).isFalse();
+    assertThat(user.loginIsValid()).isFalse();
   }
 }

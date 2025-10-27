@@ -7,11 +7,11 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface UserRegisterDsGateway {
-  boolean existsByName(String name);
+  boolean existsByLogin(String name);
 
   boolean existsByEmail(String email);
 
-  boolean existsByNameAndNotId(String name, UUID id);
+  boolean existsByLoginAndNotId(String name, UUID id);
 
   UserDataMapper save(UserDbRequestDTO requestDTO);
 

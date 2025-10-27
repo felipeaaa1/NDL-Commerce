@@ -30,7 +30,7 @@ public class UserDataMapper implements UserDetails {
   private UUID id;
 
   @Column(unique = true)
-  private String name;
+  private String login;
 
   private String password;
 
@@ -62,15 +62,15 @@ public class UserDataMapper implements UserDetails {
   @Column(name = "credentials_non_expired", nullable = false)
   private boolean credentialsNonExpired = true;
 
-  public UserDataMapper(String name, String email, UserType type, String password) {
-    this.name = name;
+  public UserDataMapper(String login, String email, UserType type, String password) {
+    this.login = login;
     this.email = email;
     this.type = type;
     this.password = password;
   }
 
-  public UserDataMapper(String name, String email, UserType type) {
-    this.name = name;
+  public UserDataMapper(String login, String email, UserType type) {
+    this.login = login;
     this.email = email;
     this.type = type;
   }
@@ -82,7 +82,7 @@ public class UserDataMapper implements UserDetails {
 
   @Override
   public String getUsername() {
-    return this.name;
+    return this.login;
   }
 
   @Override

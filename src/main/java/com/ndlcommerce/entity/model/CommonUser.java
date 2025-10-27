@@ -4,7 +4,7 @@ import com.ndlcommerce.entity.UserType;
 import java.util.regex.Pattern;
 
 public class CommonUser implements User {
-  private String name;
+  private String login;
   private String email;
   private String password;
   private UserType type;
@@ -18,13 +18,13 @@ public class CommonUser implements User {
   }
 
   @Override
-  public boolean nameIsValid() {
-    return name != null && name.length() >= 4;
+  public boolean loginIsValid() {
+    return login != null && login.length() >= 4;
   }
 
   @Override
-  public String getName() {
-    return this.name;
+  public String getLogin() {
+    return this.login;
   }
 
   @Override
@@ -42,8 +42,8 @@ public class CommonUser implements User {
     return this.type;
   }
 
-  public CommonUser(String name, String email, UserType type, String password) {
-    this.name = name;
+  public CommonUser(String login, String email, UserType type, String password) {
+    this.login = login;
     this.email = email;
     this.type = type;
     this.password = password;
