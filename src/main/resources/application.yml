@@ -57,6 +57,11 @@ management:
         #        include: beans, logfile, health
         include: '*'
 
+api:
+  security:
+    token:
+      secret: ${TOKEN_SECRET}
+
 ---
 spring:
   config:

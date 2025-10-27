@@ -8,11 +8,12 @@ import jakarta.validation.Valid;
 import java.util.UUID;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/users")
-// @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
+@PreAuthorize("hasAnyRole('ADMIN', 'USER')")
 public class UserRegisterController {
 
   private final UserInputBoundary userInput;
@@ -22,6 +23,7 @@ public class UserRegisterController {
   }
 
   @PostMapping
+  @PreAuthorize("hasRole('ADMIN')")
   @ResponseStatus(HttpStatus.CREATED)
   public ResponseEntity<?> create(@Valid @RequestBody UserRequestDTO requestModel) {
     var userCreated = userInput.create(requestModel);

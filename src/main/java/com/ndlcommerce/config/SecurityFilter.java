@@ -1,48 +1,48 @@
-// package com.ndlcommerce.config;
-//
-// import java.io.IOException;
-//
-// import com.ndlcommerce.adapters.persistence.JpaUserRepository;
-// import org.springframework.beans.factory.annotation.Autowired;
-// import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-// import org.springframework.security.core.context.SecurityContextHolder;
-// import org.springframework.stereotype.Component;
-// import org.springframework.web.filter.OncePerRequestFilter;
-//
-// import jakarta.servlet.FilterChain;
-// import jakarta.servlet.ServletException;
-// import jakarta.servlet.http.HttpServletRequest;
-// import jakarta.servlet.http.HttpServletResponse;
-//
-// @Component
-// public class SecurityFilter extends OncePerRequestFilter {
-//
-//    @Autowired
-//    private TokenService tokenService;
-//
-//    @Autowired
-//    private JpaUserRepository userRepository;
-//
-//    @Override
-//    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
-// FilterChain filterChain)
-//            throws ServletException, IOException {
-//        var token = this.recoverToken(request);
-//        if (token != null) {
-//            String login = tokenService.validateToken(token);
-//            if (login != null) {
-//                var user = userRepository.findByLogin(login);
-//                var authentication = new UsernamePasswordAuthenticationToken(user, null,
-// user.getAuthorities());
-//                SecurityContextHolder.getContext().setAuthentication(authentication);
-//            }
-//        }
-//        filterChain.doFilter(request, response);
-//    }
-//
-//    private String recoverToken(HttpServletRequest request) {
-//        String authHeader = request.getHeader("Authorization");
-//        if (authHeader == null) return null;
-//        return authHeader.replace("Bearer ", "");
-//    }
-// }
+package com.ndlcommerce.config;
+
+import com.ndlcommerce.adapters.persistence.JpaUserRepository;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
+
+@Component
+public class SecurityFilter extends OncePerRequestFilter {
+
+  private final TokenService tokenService;
+
+  private final JpaUserRepository userRepository;
+
+  public SecurityFilter(TokenService tokenService, JpaUserRepository userRepository) {
+    this.tokenService = tokenService;
+    this.userRepository = userRepository;
+  }
+
+  @Override
+  protected void doFilterInternal(
+      HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+      throws ServletException, IOException {
+    var token = this.recoverToken(request);
+    if (token != null) {
+      String login = tokenService.validateToken(token);
+      if (login != null) {
+        var user = userRepository.findByName(login);
+        var authentication =
+            new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+      }
+    }
+    filterChain.doFilter(request, response);
+  }
+
+  private String recoverToken(HttpServletRequest request) {
+    String authHeader = request.getHeader("Authorization");
+    if (authHeader == null) return null;
+    return authHeader.replace("Bearer ", "");
+  }
+}
