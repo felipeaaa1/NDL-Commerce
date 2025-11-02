@@ -1,6 +1,8 @@
 package com.ndlcommerce;
 
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
+import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -16,7 +18,17 @@ import org.springframework.core.type.filter.TypeFilter;
 public class NdlCommerceApplication {
 
   public static void main(String[] args) {
+
+    System.out.printf("\n\uD83D\uDD28 Starting NdlCommerceApplication");
+    long startTime = System.currentTimeMillis();
+
     SpringApplication.run(NdlCommerceApplication.class, args);
+
+    long endTime = System.currentTimeMillis();
+    long startupTime = endTime - startTime;
+    System.out.printf(
+        "\n\uD83D\uDE80 Application started in %d ms (%d seconds) ",
+        startupTime, startupTime / 1000);
   }
 
   // Passo 3 — Post-processor para “plugar” nosso scanner manual
@@ -25,6 +37,22 @@ public class NdlCommerceApplication {
     return beanFactory -> {
       if (ctx instanceof AnnotationConfigServletWebServerApplicationContext webCtx) {
         genericApplicationContext((BeanDefinitionRegistry) webCtx.getBeanFactory());
+      }
+    };
+  }
+
+  // passo 0: colocar um logger para acompanhar o procesos na tela
+  @Bean
+  BeanPostProcessor beanCreationLogger() {
+    return new BeanPostProcessor() {
+      @Override
+      public Object postProcessBeforeInitialization(Object bean, String beanName)
+          throws BeansException {
+        String pkg = bean.getClass().getPackageName();
+        if (pkg.contains("com.ndlcommerce")) {
+          System.out.println("\u2699\uFE0F Initializing bean: " + beanName);
+        }
+        return bean;
       }
     };
   }
