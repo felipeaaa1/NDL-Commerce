@@ -104,7 +104,6 @@ public class UserRegisterInteractor implements UserInputBoundary {
     return userPresenter.prepareSuccessView(accountResponseModel);
   }
 
-  //  TODO: fix updated_at and created_at columns
   @Override
   public UserResponseDTO updateUser(UUID userId, UserRequestDTO requestModel) {
     if (userDsGateway.existsByLoginAndNotId(requestModel.getLogin(), userId)) {

@@ -1,5 +1,6 @@
 package com.ndlcommerce.adapters.persistence;
 
+import com.ndlcommerce.config.SecurityFilter;
 import com.ndlcommerce.useCase.interfaces.UserRegisterDsGateway;
 import com.ndlcommerce.useCase.request.UserDbRequestDTO;
 import java.util.List;
@@ -15,10 +16,13 @@ public class JpaUser implements UserRegisterDsGateway {
 
   private final JpaUserRepository repository;
   private final PasswordEncoder encoder;
+  private final SecurityFilter securityFilter;
 
-  public JpaUser(JpaUserRepository repository, PasswordEncoder encoder) {
+  public JpaUser(
+      JpaUserRepository repository, PasswordEncoder encoder, SecurityFilter securityFilter) {
     this.repository = repository;
     this.encoder = encoder;
+    this.securityFilter = securityFilter;
   }
 
   @Override
@@ -39,9 +43,14 @@ public class JpaUser implements UserRegisterDsGateway {
   @Override
   public UserDataMapper save(UserDbRequestDTO user) {
 
+    UserDataMapper userLogado = securityFilter.obterUsuarioLogado();
     UserDataMapper entity =
         new UserDataMapper(
-            user.getLogin(), user.getEmail(), user.getType(), encoder.encode(user.getPassword()));
+            user.getLogin(),
+            user.getEmail(),
+            user.getType(),
+            encoder.encode(user.getPassword()),
+            userLogado.getId());
     return repository.save(entity);
   }
 
@@ -82,11 +91,16 @@ public class JpaUser implements UserRegisterDsGateway {
     if (repository.findById(uuid).isEmpty()) {
       return null;
     }
+    UserDataMapper userLogado = securityFilter.obterUsuarioLogado();
+
     UserDataMapper user = byId.get();
     user.setLogin(userDsModel.getLogin() == null ? user.getLogin() : userDsModel.getLogin());
     user.setType(
-        userDsModel.getType().toString().isEmpty() ? user.getType() : userDsModel.getType());
+        userDsModel.getType() == null || userDsModel.getType().toString().isEmpty()
+            ? user.getType()
+            : userDsModel.getType());
     user.setEmail(userDsModel.getEmail() == null ? user.getEmail() : userDsModel.getEmail());
+    user.setUpdated_by(userLogado.getId());
     return repository.save(user);
   }
 

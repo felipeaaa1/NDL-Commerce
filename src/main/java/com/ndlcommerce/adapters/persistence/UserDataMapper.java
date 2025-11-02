@@ -47,9 +47,13 @@ public class UserDataMapper implements UserDetails {
   @Column(name = "created_at")
   private LocalDateTime creationTime;
 
+  private UUID created_by;
+
   @UpdateTimestamp
   @Column(name = "updated_at")
   private LocalDateTime updateTime;
+
+  private UUID updated_by;
 
   @Column(nullable = false)
   private boolean enabled = true;
@@ -63,11 +67,13 @@ public class UserDataMapper implements UserDetails {
   @Column(name = "credentials_non_expired", nullable = false)
   private boolean credentialsNonExpired = true;
 
-  public UserDataMapper(String login, String email, UserType type, String password) {
+  public UserDataMapper(
+      String login, String email, UserType type, String password, UUID created_by) {
     this.login = login;
     this.email = email;
     this.type = type;
     this.password = password;
+    this.created_by = created_by;
   }
 
   public UserDataMapper(String login, String email, UserType type) {

@@ -32,6 +32,7 @@ public class AuthenticationController {
     this.tokenService = tokenService;
   }
 
+  //  TODO: tratar UserDetailsService e conta bloqueada
   @PostMapping("/login")
   public ResponseEntity login(@RequestBody @Valid AuthenticationDTO data) {
     var userPass = new UsernamePasswordAuthenticationToken(data.login(), data.password());

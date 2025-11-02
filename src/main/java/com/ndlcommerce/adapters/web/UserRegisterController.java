@@ -46,6 +46,7 @@ public class UserRegisterController {
   }
 
   @PutMapping("{id}")
+  @PreAuthorize("hasRole('ADMIN')")
   public ResponseEntity<?> updateUser(
       @PathVariable("id") String id, @RequestBody UserRequestDTO requestModel) {
     var result = userInput.updateUser(UUID.fromString(id), requestModel);
@@ -53,6 +54,7 @@ public class UserRegisterController {
   }
 
   @DeleteMapping("{id}")
+  @PreAuthorize("hasRole('ADMIN')")
   public ResponseEntity<?> deleteUser(@PathVariable("id") String id) {
     UserResponseDTO userResponseDTO = userInput.deleteUser(UUID.fromString(id));
     return ResponseEntity.ok().body(userResponseDTO);
