@@ -9,11 +9,12 @@ import java.util.UUID;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@EnableMethodSecurity
 @RequestMapping("/users")
-@PreAuthorize("hasAnyRole('ADMIN', 'USER')")
 public class UserRegisterController {
 
   private final UserInputBoundary userInput;
@@ -23,7 +24,7 @@ public class UserRegisterController {
   }
 
   @PostMapping
-  @PreAuthorize("hasRole('ADMIN')")
+  @PreAuthorize("hasAnyRole('ADMIN')")
   @ResponseStatus(HttpStatus.CREATED)
   public ResponseEntity<?> create(@Valid @RequestBody UserRequestDTO requestModel) {
     var userCreated = userInput.create(requestModel);
@@ -46,7 +47,7 @@ public class UserRegisterController {
   }
 
   @PutMapping("{id}")
-  @PreAuthorize("hasRole('ADMIN')")
+  @PreAuthorize("hasAnyRole('ADMIN')")
   public ResponseEntity<?> updateUser(
       @PathVariable("id") String id, @RequestBody UserRequestDTO requestModel) {
     var result = userInput.updateUser(UUID.fromString(id), requestModel);
@@ -54,7 +55,7 @@ public class UserRegisterController {
   }
 
   @DeleteMapping("{id}")
-  @PreAuthorize("hasRole('ADMIN')")
+  @PreAuthorize("hasAnyRole('ADMIN')")
   public ResponseEntity<?> deleteUser(@PathVariable("id") String id) {
     UserResponseDTO userResponseDTO = userInput.deleteUser(UUID.fromString(id));
     return ResponseEntity.ok().body(userResponseDTO);

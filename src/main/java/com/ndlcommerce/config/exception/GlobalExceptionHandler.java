@@ -11,6 +11,7 @@ import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -95,6 +96,13 @@ public class GlobalExceptionHandler {
     System.err.println(e.getMessage());
     return new ErrorResponseDTO(
         HttpStatus.NOT_FOUND.value(), "Elemento com id fornecido não encontrado", List.of());
+  }
+
+  @ResponseStatus(HttpStatus.FORBIDDEN)
+  @ExceptionHandler(AuthorizationDeniedException.class)
+  public ErrorResponseDTO handleAccessDeniedException(AuthorizationDeniedException e) {
+    System.err.println(e.getMessage());
+    return ErrorResponseDTO.forbidden("Usuário sem permissão para essa operação");
   }
 
   @ExceptionHandler(RuntimeException.class)
