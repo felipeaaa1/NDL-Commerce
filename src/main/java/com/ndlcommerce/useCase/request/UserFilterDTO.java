@@ -1,6 +1,6 @@
 package com.ndlcommerce.useCase.request;
 
-import com.ndlcommerce.entity.UserType;
+import com.ndlcommerce.entity.enums.UserType;
 
 public class UserFilterDTO {
 

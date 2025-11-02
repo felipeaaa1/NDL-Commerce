@@ -1,6 +1,6 @@
 package com.ndlcommerce.entity.factory;
 
-import com.ndlcommerce.entity.UserType;
+import com.ndlcommerce.entity.enums.UserType;
 import com.ndlcommerce.entity.model.User;
 
 public interface UserFactory {

@@ -1,6 +1,6 @@
 package com.ndlcommerce.entity.model;
 
-import com.ndlcommerce.entity.UserType;
+import com.ndlcommerce.entity.enums.UserType;
 
 public interface User {
   boolean passwordIsValid();

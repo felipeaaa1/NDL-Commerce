@@ -1,6 +1,6 @@
 package com.ndlcommerce.adapters.persistence;
 
-import com.ndlcommerce.useCase.UserRegisterDsGateway;
+import com.ndlcommerce.useCase.interfaces.UserRegisterDsGateway;
 import com.ndlcommerce.useCase.request.UserDbRequestDTO;
 import java.util.List;
 import java.util.Optional;

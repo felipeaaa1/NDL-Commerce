@@ -1,6 +1,6 @@
 package com.ndlcommerce.useCase.request;
 
-import com.ndlcommerce.entity.UserType;
+import com.ndlcommerce.entity.enums.UserType;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

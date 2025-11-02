@@ -1,6 +1,6 @@
 package com.ndlcommerce.adapters.persistence;
 
-import com.ndlcommerce.entity.UserType;
+import com.ndlcommerce.entity.enums.UserType;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -23,6 +23,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 @Table(name = "app_user", schema = "ecommerce")
+// TODO: adicionar created by e updated by com o user que esta criando/editando os usuários
 public class UserDataMapper implements UserDetails {
 
   @Id

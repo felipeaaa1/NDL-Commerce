@@ -1,4 +1,4 @@
-package com.ndlcommerce.entity;
+package com.ndlcommerce.entity.enums;
 
 public enum UserType {
   COMMON("common"),

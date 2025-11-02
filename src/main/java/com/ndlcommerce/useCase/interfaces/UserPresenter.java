@@ -1,4 +1,4 @@
-package com.ndlcommerce.useCase;
+package com.ndlcommerce.useCase.interfaces;
 
 import com.ndlcommerce.useCase.request.UserResponseDTO;
 import java.util.List;

@@ -1,8 +1,8 @@
 package com.ndlcommerce.adapters.presenter;
 
-import com.ndlcommerce.useCase.UserPresenter;
 import com.ndlcommerce.useCase.exception.BusinessException;
 import com.ndlcommerce.useCase.exception.UserAlreadyExistsException;
+import com.ndlcommerce.useCase.interfaces.UserPresenter;
 import com.ndlcommerce.useCase.request.UserResponseDTO;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

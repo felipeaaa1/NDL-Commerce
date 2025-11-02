@@ -4,7 +4,7 @@ import com.ndlcommerce.adapters.persistence.UserDataMapper;
 import com.ndlcommerce.adapters.web.dto.AuthenticationDTO;
 import com.ndlcommerce.adapters.web.dto.LoginResponseDTO;
 import com.ndlcommerce.config.TokenService;
-import com.ndlcommerce.useCase.UserInputBoundary;
+import com.ndlcommerce.useCase.interfaces.UserInputBoundary;
 import com.ndlcommerce.useCase.request.UserRequestDTO;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;

@@ -3,10 +3,12 @@ package com.ndlcommerce.useCase;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
-import com.ndlcommerce.entity.UserType;
+import com.ndlcommerce.entity.enums.UserType;
 import com.ndlcommerce.entity.factory.UserFactory;
 import com.ndlcommerce.entity.model.CommonUser;
 import com.ndlcommerce.entity.model.User;
+import com.ndlcommerce.useCase.interfaces.UserPresenter;
+import com.ndlcommerce.useCase.interfaces.UserRegisterDsGateway;
 import com.ndlcommerce.useCase.request.UserDbRequestDTO;
 import com.ndlcommerce.useCase.request.UserRequestDTO;
 import com.ndlcommerce.useCase.request.UserResponseDTO;
