@@ -1,4 +1,4 @@
-package com.ndlcommerce.useCase.request;
+package com.ndlcommerce.useCase.request.user;
 
 import com.ndlcommerce.entity.enums.UserType;
 

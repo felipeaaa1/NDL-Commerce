@@ -1,7 +1,7 @@
 package com.ndlcommerce.config;
 
-import com.ndlcommerce.adapters.persistence.JpaUserRepository;
-import com.ndlcommerce.adapters.persistence.UserDataMapper;
+import com.ndlcommerce.adapters.persistence.user.JpaUserRepository;
+import com.ndlcommerce.adapters.persistence.user.UserDataMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

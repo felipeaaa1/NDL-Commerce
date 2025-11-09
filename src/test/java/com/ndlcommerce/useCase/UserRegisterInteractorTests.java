@@ -7,11 +7,11 @@ import com.ndlcommerce.entity.enums.UserType;
 import com.ndlcommerce.entity.factory.UserFactory;
 import com.ndlcommerce.entity.model.CommonUser;
 import com.ndlcommerce.entity.model.User;
-import com.ndlcommerce.useCase.interfaces.UserPresenter;
-import com.ndlcommerce.useCase.interfaces.UserRegisterDsGateway;
-import com.ndlcommerce.useCase.request.UserDbRequestDTO;
-import com.ndlcommerce.useCase.request.UserRequestDTO;
-import com.ndlcommerce.useCase.request.UserResponseDTO;
+import com.ndlcommerce.useCase.interfaces.user.UserPresenter;
+import com.ndlcommerce.useCase.interfaces.user.UserRegisterDsGateway;
+import com.ndlcommerce.useCase.request.user.UserDbRequestDTO;
+import com.ndlcommerce.useCase.request.user.UserRequestDTO;
+import com.ndlcommerce.useCase.request.user.UserResponseDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

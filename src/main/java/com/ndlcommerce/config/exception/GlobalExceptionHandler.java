@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.ndlcommerce.adapters.web.dto.ErrorFieldDTO;
 import com.ndlcommerce.adapters.web.dto.ErrorResponseDTO;
 import com.ndlcommerce.useCase.exception.BusinessException;
-import com.ndlcommerce.useCase.exception.UserAlreadyExistsException;
+import com.ndlcommerce.useCase.exception.EntityAlreadyExistsException;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -41,9 +41,9 @@ public class GlobalExceptionHandler {
     return ErrorResponseDTO.notAcceptable(e.getMessage());
   }
 
-  @ExceptionHandler(UserAlreadyExistsException.class)
+  @ExceptionHandler(EntityAlreadyExistsException.class)
   @ResponseStatus(HttpStatus.CONFLICT)
-  public ErrorResponseDTO handleUserAlreadyExistsException(UserAlreadyExistsException e) {
+  public ErrorResponseDTO handleUserAlreadyExistsException(EntityAlreadyExistsException e) {
     return ErrorResponseDTO.conflict(e.getMessage());
   }
 

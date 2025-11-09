@@ -1,15 +1,15 @@
 package com.ndlcommerce.useCase;
 
-import com.ndlcommerce.adapters.persistence.UserDataMapper;
+import com.ndlcommerce.adapters.persistence.user.UserDataMapper;
 import com.ndlcommerce.entity.factory.UserFactory;
 import com.ndlcommerce.entity.model.User;
-import com.ndlcommerce.useCase.interfaces.UserInputBoundary;
-import com.ndlcommerce.useCase.interfaces.UserPresenter;
-import com.ndlcommerce.useCase.interfaces.UserRegisterDsGateway;
-import com.ndlcommerce.useCase.request.UserDbRequestDTO;
-import com.ndlcommerce.useCase.request.UserFilterDTO;
-import com.ndlcommerce.useCase.request.UserRequestDTO;
-import com.ndlcommerce.useCase.request.UserResponseDTO;
+import com.ndlcommerce.useCase.interfaces.user.UserInputBoundary;
+import com.ndlcommerce.useCase.interfaces.user.UserPresenter;
+import com.ndlcommerce.useCase.interfaces.user.UserRegisterDsGateway;
+import com.ndlcommerce.useCase.request.user.UserDbRequestDTO;
+import com.ndlcommerce.useCase.request.user.UserFilterDTO;
+import com.ndlcommerce.useCase.request.user.UserRequestDTO;
+import com.ndlcommerce.useCase.request.user.UserResponseDTO;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -145,13 +145,18 @@ public class UserRegisterInteractor implements UserInputBoundary {
   @Override
   public UserResponseDTO deleteUser(UUID uuid) {
 
+//    TODO: validar deletar user colocando acrtive como false;
     Optional<UserDataMapper> opt = userDsGateway.getById(uuid);
 
     if (opt.isEmpty()) {
       return userPresenter.prepareFailView("NotFound");
     }
 
-    userDsGateway.delete(opt.get());
+    UserDbRequestDTO userDsModel =
+            new UserDbRequestDTO(opt.get().getLogin(), opt.get().getEmail(), opt.get().getType());
+    userDsModel.setActive(false);
+    UserDataMapper update = userDsGateway.update(uuid, userDsModel);
+
     return userPresenter.prepareSuccessView(null);
   }
 }

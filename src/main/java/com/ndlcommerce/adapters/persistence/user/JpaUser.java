@@ -1,8 +1,8 @@
-package com.ndlcommerce.adapters.persistence;
+package com.ndlcommerce.adapters.persistence.user;
 
 import com.ndlcommerce.config.SecurityFilter;
-import com.ndlcommerce.useCase.interfaces.UserRegisterDsGateway;
-import com.ndlcommerce.useCase.request.UserDbRequestDTO;
+import com.ndlcommerce.useCase.interfaces.user.UserRegisterDsGateway;
+import com.ndlcommerce.useCase.request.user.UserDbRequestDTO;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -26,8 +26,8 @@ public class JpaUser implements UserRegisterDsGateway {
   }
 
   @Override
-  public boolean existsByLogin(String name) {
-    return repository.existsByLogin(name);
+  public boolean existsByLogin(String login) {
+    return repository.existsByLogin(login);
   }
 
   @Override
@@ -36,8 +36,8 @@ public class JpaUser implements UserRegisterDsGateway {
   }
 
   @Override
-  public boolean existsByLoginAndNotId(String name, UUID id) {
-    return repository.existsByLoginAndIdNot(name, id);
+  public boolean existsByLoginAndNotId(String login, UUID id) {
+    return repository.existsByLoginAndIdNot(login, id);
   }
 
   @Override

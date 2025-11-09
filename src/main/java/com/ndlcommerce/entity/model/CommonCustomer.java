@@ -8,22 +8,18 @@ public class CommonCustomer implements Customer {
   private final String name;
   private final String contact;
   private final String address;
-  private final boolean custumerActive;
-  private final boolean userActive;
+
 
   public CommonCustomer(
       UUID userId,
       String name,
       String contact,
-      String address,
-      boolean custumerActive,
-      boolean userActive) {
+      String address
+      ) {
     this.userId = userId;
     this.name = name;
     this.contact = contact;
     this.address = address;
-    this.custumerActive = custumerActive;
-    this.userActive = userActive;
   }
 
   @Override
@@ -31,10 +27,6 @@ public class CommonCustomer implements Customer {
     return this.name != null && !this.name.isBlank() && this.name.length() >= 4;
   }
 
-  @Override
-  public boolean hasActiveUser() {
-    return this.userActive;
-  }
 
   @Override
   public boolean hasAddress() {
@@ -43,7 +35,7 @@ public class CommonCustomer implements Customer {
 
   @Override
   public boolean isCustumerActive() {
-    return this.custumerActive;
+    return false;
   }
 
   @Override

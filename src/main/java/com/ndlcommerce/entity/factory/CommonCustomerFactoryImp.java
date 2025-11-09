@@ -11,9 +11,8 @@ public class CommonCustomerFactoryImp implements CustomerFactory {
       UUID userId,
       String name,
       String contact,
-      String address,
-      boolean custumerActive,
-      boolean userActive) {
-    return new CommonCustomer(userId, name, contact, address, custumerActive, userActive);
+      String address
+      ) {
+    return new CommonCustomer(userId, name, contact, address);
   }
 }

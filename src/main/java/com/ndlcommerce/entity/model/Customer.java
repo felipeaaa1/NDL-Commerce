@@ -5,8 +5,6 @@ import java.util.UUID;
 public interface Customer {
   boolean nameIsValid();
 
-  boolean hasActiveUser();
-
   boolean hasAddress();
 
   boolean isCustumerActive();

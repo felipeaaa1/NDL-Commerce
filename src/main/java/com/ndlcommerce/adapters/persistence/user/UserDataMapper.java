@@ -1,4 +1,4 @@
-package com.ndlcommerce.adapters.persistence;
+package com.ndlcommerce.adapters.persistence.user;
 
 import com.ndlcommerce.entity.enums.UserType;
 import jakarta.persistence.*;
@@ -109,6 +109,7 @@ public class UserDataMapper implements UserDetails {
 
   @Override
   public boolean isEnabled() {
-    return this.enabled;
+    return this.enabled && this.accountNonExpired && this.accountNonLocked ;
   }
+
 }

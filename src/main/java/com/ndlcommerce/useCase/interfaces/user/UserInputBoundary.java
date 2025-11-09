@@ -1,8 +1,8 @@
-package com.ndlcommerce.useCase.interfaces;
+package com.ndlcommerce.useCase.interfaces.user;
 
-import com.ndlcommerce.useCase.request.UserFilterDTO;
-import com.ndlcommerce.useCase.request.UserRequestDTO;
-import com.ndlcommerce.useCase.request.UserResponseDTO;
+import com.ndlcommerce.useCase.request.user.UserFilterDTO;
+import com.ndlcommerce.useCase.request.user.UserRequestDTO;
+import com.ndlcommerce.useCase.request.user.UserResponseDTO;
 import java.util.List;
 import java.util.UUID;
 

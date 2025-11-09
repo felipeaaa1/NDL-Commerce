@@ -1,9 +1,9 @@
 package com.ndlcommerce.adapters.web;
 
-import com.ndlcommerce.useCase.interfaces.UserInputBoundary;
-import com.ndlcommerce.useCase.request.UserFilterDTO;
-import com.ndlcommerce.useCase.request.UserRequestDTO;
-import com.ndlcommerce.useCase.request.UserResponseDTO;
+import com.ndlcommerce.useCase.interfaces.user.UserInputBoundary;
+import com.ndlcommerce.useCase.request.user.UserFilterDTO;
+import com.ndlcommerce.useCase.request.user.UserRequestDTO;
+import com.ndlcommerce.useCase.request.user.UserResponseDTO;
 import jakarta.validation.Valid;
 import java.util.UUID;
 import org.springframework.http.HttpStatus;

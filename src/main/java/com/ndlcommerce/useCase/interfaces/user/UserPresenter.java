@@ -1,6 +1,6 @@
-package com.ndlcommerce.useCase.interfaces;
+package com.ndlcommerce.useCase.interfaces.user;
 
-import com.ndlcommerce.useCase.request.UserResponseDTO;
+import com.ndlcommerce.useCase.request.user.UserResponseDTO;
 import java.util.List;
 
 public interface UserPresenter {

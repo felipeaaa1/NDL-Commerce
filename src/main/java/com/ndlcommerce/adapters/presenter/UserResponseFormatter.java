@@ -1,9 +1,9 @@
 package com.ndlcommerce.adapters.presenter;
 
 import com.ndlcommerce.useCase.exception.BusinessException;
-import com.ndlcommerce.useCase.exception.UserAlreadyExistsException;
-import com.ndlcommerce.useCase.interfaces.UserPresenter;
-import com.ndlcommerce.useCase.request.UserResponseDTO;
+import com.ndlcommerce.useCase.exception.EntityAlreadyExistsException;
+import com.ndlcommerce.useCase.interfaces.user.UserPresenter;
+import com.ndlcommerce.useCase.request.user.UserResponseDTO;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -27,9 +27,9 @@ public class UserResponseFormatter implements UserPresenter {
   @Override
   public UserResponseDTO prepareFailView(String error) {
     if ("existsByName".equals(error)) {
-      throw new UserAlreadyExistsException("login já cadastrado");
+      throw new EntityAlreadyExistsException("login já cadastrado");
     } else if ("existsByEmail".equals(error)) {
-      throw new UserAlreadyExistsException("Email já cadastrado");
+      throw new EntityAlreadyExistsException("Email já cadastrado");
     } else if ("passwordIsValid".equals(error)) {
       throw new BusinessException(
           "Senha inválida, senha deve ter no mínimo 5 caracteres, uma letra maiúscula e uma minuscula");

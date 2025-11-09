@@ -1,4 +1,4 @@
-package com.ndlcommerce.useCase.request;
+package com.ndlcommerce.useCase.request.user;
 
 import java.util.UUID;
 

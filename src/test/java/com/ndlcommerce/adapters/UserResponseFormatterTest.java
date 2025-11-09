@@ -3,7 +3,7 @@ package com.ndlcommerce.adapters;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.ndlcommerce.adapters.presenter.UserResponseFormatter;
-import com.ndlcommerce.useCase.request.UserResponseDTO;
+import com.ndlcommerce.useCase.request.user.UserResponseDTO;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -1,4 +1,4 @@
-package com.ndlcommerce.adapters.persistence;
+package com.ndlcommerce.adapters.persistence.user;
 
 import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;

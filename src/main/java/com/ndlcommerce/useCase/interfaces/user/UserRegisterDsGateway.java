@@ -1,17 +1,17 @@
-package com.ndlcommerce.useCase.interfaces;
+package com.ndlcommerce.useCase.interfaces.user;
 
-import com.ndlcommerce.adapters.persistence.UserDataMapper;
-import com.ndlcommerce.useCase.request.UserDbRequestDTO;
+import com.ndlcommerce.adapters.persistence.user.UserDataMapper;
+import com.ndlcommerce.useCase.request.user.UserDbRequestDTO;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 public interface UserRegisterDsGateway {
-  boolean existsByLogin(String name);
+  boolean existsByLogin(String login);
 
   boolean existsByEmail(String email);
 
-  boolean existsByLoginAndNotId(String name, UUID id);
+  boolean existsByLoginAndNotId(String login, UUID id);
 
   UserDataMapper save(UserDbRequestDTO requestDTO);
 

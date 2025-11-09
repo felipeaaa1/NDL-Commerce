@@ -8,7 +8,6 @@ public interface CustomerFactory {
       UUID userId,
       String name,
       String contact,
-      String address,
-      boolean custumerActive,
-      boolean userActive);
+      String address
+      );
 }

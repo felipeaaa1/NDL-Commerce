@@ -1,6 +1,6 @@
 package com.ndlcommerce.config;
 
-import com.ndlcommerce.adapters.persistence.JpaUserRepository;
+import com.ndlcommerce.adapters.persistence.user.JpaUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
