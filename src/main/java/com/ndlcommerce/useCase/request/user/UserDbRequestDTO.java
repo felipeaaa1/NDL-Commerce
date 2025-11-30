@@ -1,25 +1,20 @@
 package com.ndlcommerce.useCase.request.user;
 
 import com.ndlcommerce.entity.enums.UserType;
+import java.time.LocalDateTime;
+import java.util.Objects;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
-import java.util.Objects;
-
 public class UserDbRequestDTO {
 
-  @Getter
-  private final String login;
-  @Getter
-  private final String email;
-  @Getter
-  private final UserType type;
-  @Getter
-  private String password;
+  @Getter private final String login;
+  @Getter private final String email;
+  @Getter private final UserType type;
+  @Getter private String password;
   private LocalDateTime creationTime;
-  @Setter
-  private boolean active;
+  @Setter private boolean active;
+
   public UserDbRequestDTO(String login, String email, UserType type, String password) {
     this.login = login;
     this.email = email;
@@ -33,7 +28,7 @@ public class UserDbRequestDTO {
     this.type = type;
   }
 
-    @Override
+  @Override
   public boolean equals(Object o) {
     if (this == o) return true;
     if (!(o instanceof UserDbRequestDTO)) return false;
@@ -49,6 +44,4 @@ public class UserDbRequestDTO {
   public int hashCode() {
     return Objects.hash(login, password, creationTime);
   }
-
-
 }

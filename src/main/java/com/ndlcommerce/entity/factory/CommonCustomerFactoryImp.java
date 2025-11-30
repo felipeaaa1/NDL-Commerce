@@ -7,12 +7,7 @@ import java.util.UUID;
 public class CommonCustomerFactoryImp implements CustomerFactory {
 
   @Override
-  public Customer create(
-      UUID userId,
-      String name,
-      String contact,
-      String address
-      ) {
+  public Customer create(UUID userId, String name, String contact, String address) {
     return new CommonCustomer(userId, name, contact, address);
   }
 }

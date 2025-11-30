@@ -145,7 +145,7 @@ public class UserRegisterInteractor implements UserInputBoundary {
   @Override
   public UserResponseDTO deleteUser(UUID uuid) {
 
-//    TODO: validar deletar user colocando acrtive como false;
+    //    TODO: validar deletar user colocando acrtive como false;
     Optional<UserDataMapper> opt = userDsGateway.getById(uuid);
 
     if (opt.isEmpty()) {
@@ -153,7 +153,7 @@ public class UserRegisterInteractor implements UserInputBoundary {
     }
 
     UserDbRequestDTO userDsModel =
-            new UserDbRequestDTO(opt.get().getLogin(), opt.get().getEmail(), opt.get().getType());
+        new UserDbRequestDTO(opt.get().getLogin(), opt.get().getEmail(), opt.get().getType());
     userDsModel.setActive(false);
     UserDataMapper update = userDsGateway.update(uuid, userDsModel);
 

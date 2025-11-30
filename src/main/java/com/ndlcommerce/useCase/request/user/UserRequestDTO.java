@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
-public class  UserRequestDTO {
+public class UserRequestDTO {
 
   @NotBlank
   @Size(min = 4, max = 50)
@@ -46,5 +46,4 @@ public class  UserRequestDTO {
   public String getPassword() {
     return password;
   }
-
 }

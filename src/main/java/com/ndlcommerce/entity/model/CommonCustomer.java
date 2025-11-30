@@ -9,13 +9,7 @@ public class CommonCustomer implements Customer {
   private final String contact;
   private final String address;
 
-
-  public CommonCustomer(
-      UUID userId,
-      String name,
-      String contact,
-      String address
-      ) {
+  public CommonCustomer(UUID userId, String name, String contact, String address) {
     this.userId = userId;
     this.name = name;
     this.contact = contact;
@@ -26,7 +20,6 @@ public class CommonCustomer implements Customer {
   public boolean nameIsValid() {
     return this.name != null && !this.name.isBlank() && this.name.length() >= 4;
   }
-
 
   @Override
   public boolean hasAddress() {

@@ -1,11 +1,11 @@
 package com.ndlcommerce.adapters.web;
 
-
-import com.ndlcommerce.useCase.CustomerRegisterInteractor;
 import com.ndlcommerce.useCase.interfaces.customer.CustomerInputBoundary;
+import com.ndlcommerce.useCase.request.customer.CustomerFilterDTO;
 import com.ndlcommerce.useCase.request.customer.CustomerRequestDTO;
-import com.ndlcommerce.useCase.request.user.UserRequestDTO;
+import com.ndlcommerce.useCase.request.customer.CustomerResponseDTO;
 import jakarta.validation.Valid;
+import java.util.UUID;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,17 +17,49 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/customer")
 public class CustomerRegisterController {
 
-    private final CustomerInputBoundary customerInput;
+  private final CustomerInputBoundary customerInput;
 
-    public CustomerRegisterController(CustomerInputBoundary customerInput) {
-        this.customerInput = customerInput;
-    }
+  public CustomerRegisterController(CustomerInputBoundary customerInput) {
+    this.customerInput = customerInput;
+  }
 
-    @PostMapping
-    @PreAuthorize("hasAnyRole('ADMIN')")
-    @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<?> create(@Valid @RequestBody CustomerRequestDTO requestModel) {
-        var userCreated = customerInput.create(requestModel);
-        return ResponseEntity.ok().body(userCreated);
-    }
+  @GetMapping
+  public ResponseEntity<?> listCustomers(
+      @RequestBody CustomerFilterDTO filter,
+      @RequestParam(defaultValue = "0") int page,
+      @RequestParam(defaultValue = "10") int size) {
+
+    var result = customerInput.list(filter, page, size);
+    return ResponseEntity.ok().body(result);
+  }
+
+  @GetMapping("{id}")
+  public ResponseEntity<?> getCustomerById(@PathVariable("id") String id) {
+    var result = customerInput.getById(UUID.fromString(id));
+    return ResponseEntity.ok().body(result);
+  }
+
+  @PostMapping
+  @PreAuthorize("hasAnyRole('ADMIN')")
+  @ResponseStatus(HttpStatus.CREATED)
+  public ResponseEntity<?> create(@Valid @RequestBody CustomerRequestDTO requestModel) {
+    var userCreated = customerInput.create(requestModel);
+    return ResponseEntity.ok().body(userCreated);
+  }
+
+  @PutMapping("{id}")
+  @PreAuthorize("hasAnyRole('ADMIN')")
+  public ResponseEntity<?> updateCustomer(
+      @PathVariable("id") String id, @RequestBody CustomerRequestDTO requestModel) {
+
+    var result = customerInput.updateCustomer(UUID.fromString(id), requestModel);
+    return ResponseEntity.ok().body(result);
+  }
+
+  @DeleteMapping("{id}")
+  @PreAuthorize("hasAnyRole('ADMIN')")
+  public ResponseEntity<?> deleteCustomer(@PathVariable("id") String id) {
+    CustomerResponseDTO responseDTO = customerInput.deleteCustomer(UUID.fromString(id));
+    return ResponseEntity.ok().body(responseDTO);
+  }
 }

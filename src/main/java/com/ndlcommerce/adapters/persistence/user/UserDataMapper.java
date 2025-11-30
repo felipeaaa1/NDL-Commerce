@@ -109,7 +109,6 @@ public class UserDataMapper implements UserDetails {
 
   @Override
   public boolean isEnabled() {
-    return this.enabled && this.accountNonExpired && this.accountNonLocked ;
+    return this.enabled && this.accountNonExpired && this.accountNonLocked;
   }
-
 }
