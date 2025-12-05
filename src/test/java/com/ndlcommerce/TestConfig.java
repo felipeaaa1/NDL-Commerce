@@ -8,11 +8,11 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class TestConfig {
 
-    @Bean
-    BeanFactoryPostProcessor registerManualScanForTests() {
-        return beanFactory -> {
-            var registry = (BeanDefinitionRegistry) beanFactory;
-            new NdlCommerceApplication().genericApplicationContext(registry);
-        };
-    }
+  @Bean
+  BeanFactoryPostProcessor registerManualScanForTests() {
+    return beanFactory -> {
+      var registry = (BeanDefinitionRegistry) beanFactory;
+      new NdlCommerceApplication().genericApplicationContext(registry);
+    };
+  }
 }

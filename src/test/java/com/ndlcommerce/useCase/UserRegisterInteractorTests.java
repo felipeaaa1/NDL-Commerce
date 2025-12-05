@@ -13,11 +13,10 @@ import com.ndlcommerce.useCase.interfaces.user.UserRegisterDsGateway;
 import com.ndlcommerce.useCase.request.user.UserDbRequestDTO;
 import com.ndlcommerce.useCase.request.user.UserRequestDTO;
 import com.ndlcommerce.useCase.request.user.UserResponseDTO;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
 import java.time.LocalDateTime;
 import java.util.UUID;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class UserRegisterInteractorTests {
 
@@ -41,12 +40,12 @@ public class UserRegisterInteractorTests {
         new UserRequestDTO(user.getLogin(), user.getType(), user.getEmail(), user.getPassword());
 
     UserDataMapper fakeSavedUser =
-            new UserDataMapper(
-                    user.getLogin(),
-                    user.getEmail(),
-                    user.getType(),
-                    user.getPassword(),
-                    UUID.randomUUID());
+        new UserDataMapper(
+            user.getLogin(),
+            user.getEmail(),
+            user.getType(),
+            user.getPassword(),
+            UUID.randomUUID());
 
     fakeSavedUser.setCreationTime(LocalDateTime.now());
 
@@ -55,8 +54,7 @@ public class UserRegisterInteractorTests {
             new CommonUser(user.getLogin(), user.getEmail(), user.getType(), user.getPassword()));
     when(userDsGateway.existsByLogin(anyString())).thenReturn(false);
 
-    when(userDsGateway.save(any(UserDbRequestDTO.class)))
-            .thenReturn(fakeSavedUser);
+    when(userDsGateway.save(any(UserDbRequestDTO.class))).thenReturn(fakeSavedUser);
 
     interactor.create(userRequestDTO);
 
