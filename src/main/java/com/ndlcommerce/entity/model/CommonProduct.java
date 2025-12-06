@@ -1,22 +1,13 @@
 package com.ndlcommerce.entity.model;
 
-import java.util.UUID;
-
 public class CommonProduct implements Product {
 
-  private final UUID id;
   private final String name;
   private final String description;
 
-  public CommonProduct(UUID id, String name, String description) {
-    this.id = id;
+  public CommonProduct(String name, String description) {
     this.name = name;
     this.description = description;
-  }
-
-  @Override
-  public UUID getId() {
-    return this.id;
   }
 
   @Override

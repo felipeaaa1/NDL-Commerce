@@ -2,21 +2,20 @@ package com.ndlcommerce.entity.model;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.UUID;
 import org.junit.jupiter.api.Test;
 
 class CommonProductTest {
 
   @Test
   void givenShortName_whenNameIsNotValid_thenIsFalse() {
-    Product product = new CommonProduct(UUID.randomUUID(), "A", "Descrição válida");
+    Product product = new CommonProduct("A", "Descrição válida");
 
     assertThat(product.nameIsValid()).isFalse();
   }
 
   @Test
   void givenNullName_whenNameIsNotValid_thenIsFalse() {
-    Product product = new CommonProduct(UUID.randomUUID(), null, "Descrição válida");
+    Product product = new CommonProduct(null, "Descrição válida");
 
     assertThat(product.nameIsValid()).isFalse();
   }
@@ -25,7 +24,6 @@ class CommonProductTest {
   void givenHugeName_whenNameIsNotValid_thenIsFalse() {
     Product product =
         new CommonProduct(
-            UUID.randomUUID(),
             """
                         @Test
                         void givenNullName_whenNameIsNotValid_thenIsFalse() {
@@ -44,14 +42,14 @@ class CommonProductTest {
 
   @Test
   void givenNullDescription_whenDescriptionIsNotValid_thenIsFalse() {
-    Product product = new CommonProduct(UUID.randomUUID(), "Produto válido", null);
+    Product product = new CommonProduct("Produto válido", null);
 
     assertThat(product.descriptionIsValid()).isFalse();
   }
 
   @Test
   void givenBlankDescription_whenDescriptionIsNotValid_thenIsFalse() {
-    Product product = new CommonProduct(UUID.randomUUID(), "Produto válido", "   ");
+    Product product = new CommonProduct("Produto válido", "   ");
 
     assertThat(product.descriptionIsValid()).isFalse();
   }
@@ -60,7 +58,6 @@ class CommonProductTest {
   void givenHugeDescription_whenDescriptionIsNotValid_thenIsFalse() {
     Product product =
         new CommonProduct(
-            UUID.randomUUID(),
             "Produto válido",
             """
                         Randomize 'check' to 1-2.
@@ -81,16 +78,14 @@ class CommonProductTest {
 
   @Test
   void givenValidName_whenNameIsValid_thenIsTrue() {
-    Product product =
-        new CommonProduct(UUID.randomUUID(), "Mouse Óptico", "Perfeito para trabalho");
+    Product product = new CommonProduct("Mouse Óptico", "Perfeito para trabalho");
 
     assertThat(product.nameIsValid()).isTrue();
   }
 
   @Test
   void givenValidProduct_whenNameAndDescriptionAreValid_thenIsTrue() {
-    Product product =
-        new CommonProduct(UUID.randomUUID(), "Teclado Gamer", "Switch red, RGB, silencioso");
+    Product product = new CommonProduct("Teclado Gamer", "Switch red, RGB, silencioso");
 
     assertThat(product.nameIsValid()).isTrue();
     assertThat(product.descriptionIsValid()).isTrue();
