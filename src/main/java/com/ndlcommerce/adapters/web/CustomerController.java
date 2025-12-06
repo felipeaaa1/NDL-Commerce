@@ -15,11 +15,11 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @EnableMethodSecurity
 @RequestMapping("/customer")
-public class CustomerRegisterController {
+public class CustomerController {
 
   private final CustomerInputBoundary customerInput;
 
-  public CustomerRegisterController(CustomerInputBoundary customerInput) {
+  public CustomerController(CustomerInputBoundary customerInput) {
     this.customerInput = customerInput;
   }
 

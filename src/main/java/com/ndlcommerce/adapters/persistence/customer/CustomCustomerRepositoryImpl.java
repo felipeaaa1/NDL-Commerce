@@ -7,7 +7,7 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class JpaCustomerRepositoryImpl implements CustomCustomerRepository {
+public class CustomCustomerRepositoryImpl implements CustomCustomerRepository {
 
   @PersistenceContext private EntityManager entityManager;
 

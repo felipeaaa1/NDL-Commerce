@@ -25,10 +25,11 @@ public class UserRequestDTO {
 
   @NotNull UserType type;
 
-  public UserRequestDTO(String login, UserType type, String password) {
+  public UserRequestDTO(String login, UserType type, String email, String password) {
     this.login = login;
-    this.password = password;
     this.type = type;
+    this.email = email;
+    this.password = password;
   }
 
   public String getEmail() {
