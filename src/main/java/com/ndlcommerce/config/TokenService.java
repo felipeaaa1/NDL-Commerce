@@ -5,7 +5,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.ndlcommerce.adapters.persistence.user.UserDataMapper;
-import com.ndlcommerce.useCase.exception.BusinessException;
+import com.ndlcommerce.exception.BusinessException;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;

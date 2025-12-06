@@ -27,7 +27,7 @@ public class CustomerController {
   public ResponseEntity<?> listCustomers(
       @RequestBody CustomerFilterDTO filter,
       @RequestParam(defaultValue = "0") int page,
-      @RequestParam(defaultValue = "10") int size) {
+      @RequestParam(defaultValue = "103") int size) {
 
     var result = customerInput.list(filter, page, size);
     return ResponseEntity.ok().body(result);

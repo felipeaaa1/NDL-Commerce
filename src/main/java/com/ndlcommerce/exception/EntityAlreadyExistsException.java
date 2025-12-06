@@ -1,4 +1,4 @@
-package com.ndlcommerce.useCase.exception;
+package com.ndlcommerce.exception;
 
 public class EntityAlreadyExistsException extends RuntimeException {
   public EntityAlreadyExistsException(String message) {

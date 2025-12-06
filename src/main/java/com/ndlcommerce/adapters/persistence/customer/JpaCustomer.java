@@ -3,7 +3,7 @@ package com.ndlcommerce.adapters.persistence.customer;
 import com.ndlcommerce.adapters.persistence.user.JpaUserRepository;
 import com.ndlcommerce.adapters.persistence.user.UserDataMapper;
 import com.ndlcommerce.config.SecurityFilter;
-import com.ndlcommerce.useCase.exception.BusinessException;
+import com.ndlcommerce.exception.BusinessException;
 import com.ndlcommerce.useCase.interfaces.customer.CustomerRegisterDsGateway;
 import com.ndlcommerce.useCase.interfaces.user.UserRegisterDsGateway;
 import com.ndlcommerce.useCase.request.customer.CustomerDbRequestDTO;

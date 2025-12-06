@@ -1,11 +1,9 @@
-package com.ndlcommerce.config.exception;
+package com.ndlcommerce.exception;
 
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.ndlcommerce.adapters.web.dto.ErrorFieldDTO;
 import com.ndlcommerce.adapters.web.dto.ErrorResponseDTO;
-import com.ndlcommerce.useCase.exception.BusinessException;
-import com.ndlcommerce.useCase.exception.EntityAlreadyExistsException;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
