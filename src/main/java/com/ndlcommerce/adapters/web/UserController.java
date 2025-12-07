@@ -15,11 +15,11 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @EnableMethodSecurity
 @RequestMapping("/users")
-public class UserRegisterController {
+public class UserController {
 
   private final UserInputBoundary userInput;
 
-  public UserRegisterController(UserInputBoundary userInput) {
+  public UserController(UserInputBoundary userInput) {
     this.userInput = userInput;
   }
 

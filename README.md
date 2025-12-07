@@ -17,46 +17,62 @@ O objetivo é construir uma aplicação modular, escalável e de fácil manuten�
 
 ---
 
+## 🔐 Segurança & Fluxo de Desenvolvimento
+
+Este repositório possui:
+
+- **Política formal de segurança**, documentada em `SECURITY.md`.
+- **Proteções de branch** aplicadas à `main`, incluindo:
+  - merges obrigatoriamente via Pull Request
+  - histórico linear
+  - validação de checks automatizados
+  - bloqueio de force-push e exclusões sem permissão
+  - exigência de revisão por outro usuário
+
+Essas práticas seguem padrões amplamente utilizados no mercado para garantir integridade do código e rastreabilidade das entregas.
+
+---
+
 ## 🚀 Branches
 
 - **`dev`**  
   Branch principal de desenvolvimento.  
-  Aqui ficam as implementações em andamento, novas features, ajustes e experimentos antes de revisão.  
-  Pode conter mudanças ainda não validadas para produção.
+  Aqui ficam as implementações em andamento, novas features e ajustes antes da revisão.
 
 - **`main`**  
-  Branch estável, destinada a releases.  
-  Atualmente contém apenas a base inicial do projeto.  
-  Novas features serão integradas após revisão e validação da branch `dev`.
+  Branch estável e protegida.  
+  Todas as entregas passam por Pull Request, revisão e validações antes do merge.
 
 ---
 
 ## 📦 Migrações de Banco de Dados
 
-O projeto utiliza **Flyway** para versionamento e controle de migrações no banco de dados.  
-Todas as alterações de schema são versionadas em `src/main/resources/db/migration`.
+O projeto utiliza **Flyway** para versionamento de schema.  
+As migrações ficam em `src/main/resources/db/migration`.
 
 ### 🔧 Configuração
-Antes de rodar as migrações, crie o arquivo `ndlFlywayConfig.conf` na raiz do projeto com o seguinte conteúdo:
+
+Crie o arquivo `ndlFlywayConfig.conf` na raiz do projeto:
 
 ```properties
 flyway.url=jdbc:postgresql://<HOST>:<PORT>/<DATABASE>
 flyway.user=<USUARIO>
 flyway.password=<SENHA>
 ```
-
 ### ▶️ Executando as migrações
-
-```bash
+``` bash
 mvn "-Dflyway.configFiles=ndlFlywayConfig.conf" flyway:migrate
 ```
-
-Esse comando executa todas as migrações pendentes no banco configurado.
-
----
-
 ## 📌 Status do Projeto
 
-Atualmente em desenvolvimento ativo na branch `dev`, onde estão sendo adicionadas **validações iniciais ao salvar usuário** e tratativas de **exceptions personalizadas**.
+O desenvolvimento segue ativo na branch dev, incluindo:
 
-A branch `main` permanece vazia, servindo como base para futuras revisões e publicações oficiais da aplicação.
+validações de domínio
+
+tratativas de exceções
+
+camada de produto (entidade, fábrica, presenter e use case)
+
+testes unitários
+
+A branch main contém apenas código revisado e aprovado via PR.

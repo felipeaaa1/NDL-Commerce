@@ -1,4 +1,4 @@
-package com.ndlcommerce.useCase.exception;
+package com.ndlcommerce.exception;
 
 public class BusinessException extends RuntimeException {
   public BusinessException(String message) {
