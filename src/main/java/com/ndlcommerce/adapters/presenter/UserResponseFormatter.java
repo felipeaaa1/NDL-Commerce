@@ -17,12 +17,9 @@ public class UserResponseFormatter implements UserPresenter {
       Map.of(
           "existsByName", new EntityAlreadyExistsException("login já cadastrado"),
           "existsByEmail", new EntityAlreadyExistsException("Email já cadastrado"),
-          "passwordIsValid",
-              new BusinessException(
-                  "Senha inválida, senha deve ter no mínimo 5 caracteres, uma letra maiúscula e uma minuscula"),
+          "passwordIsValid", new BusinessException( "Senha inválida, senha deve ter no mínimo 5 caracteres, uma letra maiúscula e uma minuscula"),
           "NotFound", new NoSuchElementException(),
-          "nameIsValid",
-              new BusinessException("Login inválido, login deve ter no mínimo 4 characteres"));
+          "nameIsValid", new BusinessException("Login inválido, login deve ter no mínimo 4 characteres"));
 
   @Override
   public UserResponseDTO prepareSuccessView(UserResponseDTO response) {
