@@ -53,6 +53,7 @@ public class CustomerRegisterInteractor implements CustomerInputBoundary {
     if (!customer.nameIsValid()) {
       return customerPresenter.prepareFailView("NameNotValid");
     }
+
     CustomerDbRequestDTO dbRequestDTO =
         new CustomerDbRequestDTO(
             customer.getName(),

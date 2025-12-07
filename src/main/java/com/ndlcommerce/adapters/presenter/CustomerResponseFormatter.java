@@ -1,13 +1,21 @@
 package com.ndlcommerce.adapters.presenter;
 
-import com.ndlcommerce.useCase.exception.BusinessException;
+import com.ndlcommerce.exception.BusinessException;
 import com.ndlcommerce.useCase.interfaces.customer.CustomerPresenter;
 import com.ndlcommerce.useCase.request.customer.CustomerResponseDTO;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
 
 public class CustomerResponseFormatter implements CustomerPresenter {
+
+  private static final Map<String, RuntimeException> ERRORS =
+      Map.of(
+          "UserNotExistsOrInactive",
+              new BusinessException("Usuário não encontrado ou esta inativo"),
+          "NameNotValid", new BusinessException("Nome do Cliente não é válido"));
+
   @Override
   public CustomerResponseDTO prepareSuccessView(CustomerResponseDTO customer) {
     if (customer != null) {
@@ -21,13 +29,11 @@ public class CustomerResponseFormatter implements CustomerPresenter {
 
   @Override
   public CustomerResponseDTO prepareFailView(String error) {
-    if ("UserNotExistsOrInactive".equals(error)) {
-      throw new BusinessException("Usuário não encontrado ou esta inativo");
-    } else if ("NameNotValid".equals(error)) {
-      throw new BusinessException("Nome do Cliente não é válido");
-    } else {
-      throw new RuntimeException();
-    }
+
+    RuntimeException exception = ERRORS.get(error);
+    if (exception != null) throw exception;
+
+    throw new RuntimeException("Erro desconhecido: " + error);
   }
 
   @Override

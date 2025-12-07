@@ -15,11 +15,11 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @EnableMethodSecurity
 @RequestMapping("/customer")
-public class CustomerRegisterController {
+public class CustomerController {
 
   private final CustomerInputBoundary customerInput;
 
-  public CustomerRegisterController(CustomerInputBoundary customerInput) {
+  public CustomerController(CustomerInputBoundary customerInput) {
     this.customerInput = customerInput;
   }
 
@@ -27,7 +27,7 @@ public class CustomerRegisterController {
   public ResponseEntity<?> listCustomers(
       @RequestBody CustomerFilterDTO filter,
       @RequestParam(defaultValue = "0") int page,
-      @RequestParam(defaultValue = "10") int size) {
+      @RequestParam(defaultValue = "103") int size) {
 
     var result = customerInput.list(filter, page, size);
     return ResponseEntity.ok().body(result);

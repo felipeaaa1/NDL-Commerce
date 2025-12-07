@@ -1,17 +1,25 @@
 package com.ndlcommerce.adapters.presenter;
 
-import com.ndlcommerce.useCase.exception.BusinessException;
-import com.ndlcommerce.useCase.exception.EntityAlreadyExistsException;
+import com.ndlcommerce.exception.BusinessException;
+import com.ndlcommerce.exception.EntityAlreadyExistsException;
 import com.ndlcommerce.useCase.interfaces.user.UserPresenter;
 import com.ndlcommerce.useCase.request.user.UserResponseDTO;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import org.springframework.stereotype.Component;
 
 @Component
 public class UserResponseFormatter implements UserPresenter {
+  private static final Map<String, RuntimeException> ERRORS =
+      Map.of(
+          "existsByName", new EntityAlreadyExistsException("login já cadastrado"),
+          "existsByEmail", new EntityAlreadyExistsException("Email já cadastrado"),
+          "passwordIsValid", new BusinessException( "Senha inválida, senha deve ter no mínimo 5 caracteres, uma letra maiúscula e uma minuscula"),
+          "NotFound", new NoSuchElementException(),
+          "nameIsValid", new BusinessException("Login inválido, login deve ter no mínimo 4 characteres"));
 
   @Override
   public UserResponseDTO prepareSuccessView(UserResponseDTO response) {
@@ -26,20 +34,12 @@ public class UserResponseFormatter implements UserPresenter {
 
   @Override
   public UserResponseDTO prepareFailView(String error) {
-    if ("existsByName".equals(error)) {
-      throw new EntityAlreadyExistsException("login já cadastrado");
-    } else if ("existsByEmail".equals(error)) {
-      throw new EntityAlreadyExistsException("Email já cadastrado");
-    } else if ("passwordIsValid".equals(error)) {
-      throw new BusinessException(
-          "Senha inválida, senha deve ter no mínimo 5 caracteres, uma letra maiúscula e uma minuscula");
-    } else if ("NotFound".equals(error)) {
-      throw new NoSuchElementException();
-    } else if ("nameIsValid".equals(error)) {
-      throw new BusinessException("Login inválido, login deve ter no mínimo 4 characteres");
-    } else {
-      throw new RuntimeException();
+    RuntimeException exception = ERRORS.get(error);
+    if (exception != null) {
+      throw exception;
     }
+
+    throw new RuntimeException("Erro desconhecido: " + error);
   }
 
   @Override
