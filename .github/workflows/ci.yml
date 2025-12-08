@@ -1,0 +1,45 @@
+name: CI - Build, Test and Analyze
+
+# quando isso vai disparar
+on:
+  pull_request:
+    branches: [ "main", "develop" ]
+  push:
+    branches: [ "develop" ]
+
+# os jobs no caso são conjuntos de etapas que o GitHub Actions executa.
+# aqui só tem um job que roda build e teste.
+jobs:
+  build-test:
+    name: Build and Test
+    runs-on: ubuntu-latest
+
+    steps:
+      # primeiro passo: obter o código do repositório que acionou o workflow.
+      # o Actions já sabe qual repositório é, então o checkout baixa essa versão do código para o runner.
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # define qual versão do Java o runner vai usar.
+      # distribution=temurin indica a JDK da Eclipse Temurin, a mais usada em ambientes corporativos.
+      # cache=maven ativa o cache automático das dependências Maven, acelerando builds futuros.
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+          cache: maven
+
+      # limpa o diretório target e roda o verify, que executa testes e validações.
+      # -B executa no modo batch (sem interações).
+      # -DskipTests=false é redundante, mas garante que os testes rodem mesmo se alguém colocou isso no pom.
+      - name: Build and run tests
+        run: mvn -DskipTests=false -B clean verify
+
+      # salva os resultados dos testes como artefato do workflow.
+      # isso permite baixar ou inspecionar os relatórios depois.
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: target/surefire-reports
