@@ -37,7 +37,6 @@ public class UserDataMapper implements UserDetails {
 
   @Column(name = "user_type")
   @Enumerated(EnumType.STRING)
-  @JdbcTypeCode(SqlTypes.NAMED_ENUM)
   private UserType type;
 
   @Column(unique = true)

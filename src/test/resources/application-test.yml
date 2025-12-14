@@ -1,0 +1,17 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;INIT=CREATE SCHEMA IF NOT EXISTS ecommerce;       # Cria um banco H2 só para rodar nos testes
+    driverClassName: org.h2.Driver
+    username: sa                  # H2 não exige senha
+    password:
+  jpa:
+    properties:
+      hibernate.type.preferred_enum_type: string
+    hibernate:
+      ddl-auto: create-drop       # Cria as tabelas do zero e apaga ao final dos testes
+    database-platform: org.hibernate.dialect.H2Dialect
+    show-sql: true               # Quero ver as palhaçadinha acontecendo
+api:
+  security:
+    token:
+      secret: ${TOKEN_SECRET:teste}
