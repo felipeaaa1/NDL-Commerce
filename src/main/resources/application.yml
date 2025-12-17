@@ -60,7 +60,7 @@ management:
 api:
   security:
     token:
-      secret: ${TOKEN_SECRET}
+      secret: ${TOKEN_SECRET:passkey}
 
 ---
 spring:

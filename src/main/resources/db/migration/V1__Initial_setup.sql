@@ -8,19 +8,18 @@ BEGIN
     IF EXISTS (SELECT 1 FROM information_schema.tables WHERE table_schema = 'ecommerce' AND table_name = 'app_user') THEN
         RAISE NOTICE 'Já existe a tabela app_user';
     ELSE
-        RAISE NOTICE 'Criando tabela app_user';
-        CREATE TYPE user_type_enum AS ENUM ('ADMIN', 'COMMON');
 
         CREATE TABLE ecommerce.app_user (
             id UUID PRIMARY KEY,
             name VARCHAR(255) NOT NULL,
             email VARCHAR(255) UNIQUE NOT NULL,
             password VARCHAR(255) NOT NULL,
-            user_type user_type_enum NOT NULL,
+            user_type VARCHAR(20) NOT NULL CHECK (user_type in ('ADMIN', 'COMMON')),
             created_by UUID REFERENCES ecommerce.app_user(id),
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             updated_by UUID REFERENCES ecommerce.app_user(id),
             updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+
         );
     END IF;
 END $$;
@@ -122,7 +121,7 @@ BEGIN
             id UUID PRIMARY KEY,
             order_id UUID NOT NULL REFERENCES ecommerce.order_header(id),
             sku_id UUID NOT NULL REFERENCES ecommerce.product_sku(id),
-            quantity INT NOT NULL CHECK (quantity > 0),
+            quantity INT NOT NULL,
             unit_price DECIMAL(10,2) NOT NULL,
             subtotal DECIMAL(10,2) NOT NULL,
             created_by UUID REFERENCES ecommerce.app_user(id),

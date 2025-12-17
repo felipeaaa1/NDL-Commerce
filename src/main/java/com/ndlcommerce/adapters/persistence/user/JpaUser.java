@@ -50,7 +50,7 @@ public class JpaUser implements UserRegisterDsGateway {
             user.getEmail(),
             user.getType(),
             encoder.encode(user.getPassword()),
-            userLogado.getId());
+            userLogado == null ? null : userLogado.getId() );
     return repository.save(entity);
   }
 

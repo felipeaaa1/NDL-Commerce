@@ -30,7 +30,7 @@ public class SecurityConfiguration {
             session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(
             auth ->
-                auth.requestMatchers(HttpMethod.POST, "/auth/login")
+                auth.requestMatchers(HttpMethod.POST, "/auth/*")
                     .permitAll()
                     .anyRequest()
                     .authenticated())

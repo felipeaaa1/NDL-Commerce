@@ -5,7 +5,7 @@
  */
 
 CREATE TABLE IF NOT EXISTS ecommerce.brand (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    id UUID PRIMARY KEY,
     name VARCHAR(150) NOT NULL UNIQUE,
     active BOOLEAN NOT NULL DEFAULT TRUE,
 
