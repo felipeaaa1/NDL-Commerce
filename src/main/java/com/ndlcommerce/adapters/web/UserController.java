@@ -1,6 +1,7 @@
 package com.ndlcommerce.adapters.web;
 
 import com.ndlcommerce.useCase.interfaces.user.UserInputBoundary;
+import com.ndlcommerce.useCase.request.user.UpdateUserDTO;
 import com.ndlcommerce.useCase.request.user.UserFilterDTO;
 import com.ndlcommerce.useCase.request.user.UserRequestDTO;
 import com.ndlcommerce.useCase.request.user.UserResponseDTO;
@@ -34,8 +35,8 @@ public class UserController {
   @GetMapping
   public ResponseEntity<?> listUsers(
       @RequestBody UserFilterDTO filter,
-      @RequestParam(defaultValue = "0") int page,
-      @RequestParam(defaultValue = "10") int size) {
+      @RequestParam(name = "page", defaultValue = "0") int page,
+      @RequestParam(name = "size", defaultValue = "10") int size) {
     var result = userInput.list(filter, page, size);
     return ResponseEntity.ok().body(result);
   }
@@ -49,7 +50,7 @@ public class UserController {
   @PutMapping("{id}")
   @PreAuthorize("hasAnyRole('ADMIN')")
   public ResponseEntity<?> updateUser(
-      @PathVariable("id") String id, @RequestBody UserRequestDTO requestModel) {
+      @PathVariable("id") String id, @RequestBody UpdateUserDTO requestModel) {
     var result = userInput.updateUser(UUID.fromString(id), requestModel);
     return ResponseEntity.ok().body(result);
   }

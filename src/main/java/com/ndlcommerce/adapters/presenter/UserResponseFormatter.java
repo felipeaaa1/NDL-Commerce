@@ -28,7 +28,8 @@ public class UserResponseFormatter implements UserPresenter {
   public UserResponseDTO prepareSuccessView(UserResponseDTO response) {
     if (response != null) {
       LocalDateTime responseTime = LocalDateTime.parse(response.getCreationTime());
-      response.setCreationTime(responseTime.format(DateTimeFormatter.ofPattern("hh:mm:ss")));
+      response.setCreationTime(
+          responseTime.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")));
       return response;
     } else {
       return null;

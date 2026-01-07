@@ -2,14 +2,12 @@ package com.ndlcommerce.useCase;
 
 import com.ndlcommerce.adapters.persistence.user.UserDataMapper;
 import com.ndlcommerce.entity.factory.UserFactory;
+import com.ndlcommerce.entity.model.CommonUser;
 import com.ndlcommerce.entity.model.User;
 import com.ndlcommerce.useCase.interfaces.user.UserInputBoundary;
 import com.ndlcommerce.useCase.interfaces.user.UserPresenter;
 import com.ndlcommerce.useCase.interfaces.user.UserRegisterDsGateway;
-import com.ndlcommerce.useCase.request.user.UserDbRequestDTO;
-import com.ndlcommerce.useCase.request.user.UserFilterDTO;
-import com.ndlcommerce.useCase.request.user.UserRequestDTO;
-import com.ndlcommerce.useCase.request.user.UserResponseDTO;
+import com.ndlcommerce.useCase.request.user.*;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -105,21 +103,27 @@ public class UserRegisterInteractor implements UserInputBoundary {
   }
 
   @Override
-  public UserResponseDTO updateUser(UUID userId, UserRequestDTO requestModel) {
-    if (userDsGateway.existsByLoginAndNotId(requestModel.getLogin(), userId)) {
+  public UserResponseDTO updateUser(UUID userId, UpdateUserDTO requestModel) {
+    Optional<UserDataMapper> opt = userDsGateway.getById(userId);
+
+    if (opt.isEmpty()) {
+      return userPresenter.prepareFailView("NotFound");
+    }
+
+    if (requestModel.getLogin() != null
+        && userDsGateway.existsByLoginAndNotId(requestModel.getLogin(), userId)) {
       return userPresenter.prepareFailView("existsByName");
     }
-    if (userDsGateway.existsByEmailAndNotId(requestModel.getEmail(), userId)) {
+    if (requestModel.getEmail() != null
+        && userDsGateway.existsByEmailAndNotId(requestModel.getEmail(), userId)) {
       return userPresenter.prepareFailView("existsByEmail");
     }
-    User user =
-        userFactory.create(
-            requestModel.getLogin(),
-            requestModel.getEmail(),
-            requestModel.getType(),
-            requestModel.getPassword());
 
-    if (!user.loginIsValid()) {
+    UserDataMapper userDB = opt.get();
+    User user =
+        new CommonUser(requestModel.getLogin(), requestModel.getEmail(), requestModel.getType());
+
+    if (requestModel.getLogin() != null && !user.loginIsValid()) {
       return userPresenter.prepareFailView("nameIsValid");
     }
 
@@ -128,10 +132,6 @@ public class UserRegisterInteractor implements UserInputBoundary {
 
     UserDataMapper update = userDsGateway.update(userId, userDsModel);
 
-    if (update == null) {
-      return userPresenter.prepareFailView("NotFound");
-    }
-
     UserResponseDTO accountResponseModel =
         new UserResponseDTO(
             update.getId(),
@@ -139,6 +139,7 @@ public class UserRegisterInteractor implements UserInputBoundary {
             update.getEmail(),
             update.getType().toString(),
             update.getCreationTime().toString());
+
     return userPresenter.prepareSuccessView(accountResponseModel);
   }
 

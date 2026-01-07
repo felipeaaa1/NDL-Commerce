@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.Setter;
 
 public class UserRequestDTO {
 
@@ -23,7 +24,7 @@ public class UserRequestDTO {
   @Email(message = "E-mail inválido")
   String email;
 
-  @NotNull UserType type;
+  @Setter @NotNull UserType type;
 
   public UserRequestDTO(String login, UserType type, String email, String password) {
     this.login = login;
