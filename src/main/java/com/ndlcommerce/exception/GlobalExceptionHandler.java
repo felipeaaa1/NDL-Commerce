@@ -9,6 +9,7 @@ import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -103,13 +104,21 @@ public class GlobalExceptionHandler {
     return ErrorResponseDTO.forbidden("Usuário sem permissão para essa operação");
   }
 
+  @ResponseStatus(HttpStatus.LOCKED)
+  @ExceptionHandler(LockedException.class)
+  public ErrorResponseDTO handleLockedException(LockedException e) {
+    System.err.println(e.getMessage());
+    return ErrorResponseDTO.locked(
+        "Conta bloqueada, Por gentileza entre em contato com o suporte.");
+  }
+
   @ExceptionHandler(RuntimeException.class)
   @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
   public ErrorResponseDTO handleUnexpected(RuntimeException e) {
     System.err.println("Unhandled exception: " + e.getMessage());
     return new ErrorResponseDTO(
         HttpStatus.INTERNAL_SERVER_ERROR.value(),
-        "🎉 Parabeeens🎉 você achou um erro não tratado! Por gentileza entre em contato com a mensagem e causa do erro: "
+        "🎉 Parabeeens🎉 você achou um erro não tratado! Por gentileza entre em contato com o suporte e informe a mensagem e causa do erro: "
             + e.getMessage()
             + " | causa: "
             + e.getCause()

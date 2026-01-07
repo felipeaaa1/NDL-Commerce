@@ -24,4 +24,8 @@ public record ErrorResponseDTO(int status, String message, List<ErrorFieldDTO> e
   public static ErrorResponseDTO forbidden(String message) {
     return new ErrorResponseDTO(HttpStatus.FORBIDDEN.value(), message, List.of());
   }
+
+  public static ErrorResponseDTO locked(String message) {
+    return new ErrorResponseDTO(HttpStatus.LOCKED.value(), message, List.of());
+  }
 }
