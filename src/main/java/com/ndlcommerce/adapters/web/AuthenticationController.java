@@ -4,6 +4,7 @@ import com.ndlcommerce.adapters.persistence.user.UserDataMapper;
 import com.ndlcommerce.adapters.web.dto.AuthenticationDTO;
 import com.ndlcommerce.adapters.web.dto.LoginResponseDTO;
 import com.ndlcommerce.config.TokenService;
+import com.ndlcommerce.entity.enums.UserType;
 import com.ndlcommerce.useCase.interfaces.user.UserInputBoundary;
 import com.ndlcommerce.useCase.request.user.UserRequestDTO;
 import jakarta.validation.Valid;
@@ -46,6 +47,7 @@ public class AuthenticationController {
   @PostMapping("/register")
   @ResponseStatus(HttpStatus.CREATED)
   public ResponseEntity<?> create(@Valid @RequestBody UserRequestDTO requestModel) {
+    requestModel.setType(UserType.COMMON);
     var userCreated = userInput.create(requestModel);
     return ResponseEntity.ok().body(userCreated);
   }

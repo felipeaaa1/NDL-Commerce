@@ -1,5 +1,6 @@
 package com.ndlcommerce.useCase.interfaces.user;
 
+import com.ndlcommerce.useCase.request.user.UpdateUserDTO;
 import com.ndlcommerce.useCase.request.user.UserFilterDTO;
 import com.ndlcommerce.useCase.request.user.UserRequestDTO;
 import com.ndlcommerce.useCase.request.user.UserResponseDTO;
@@ -13,7 +14,7 @@ public interface UserInputBoundary {
 
   UserResponseDTO getById(UUID userId);
 
-  UserResponseDTO updateUser(UUID userId, UserRequestDTO requestModel);
+  UserResponseDTO updateUser(UUID userId, UpdateUserDTO requestModel);
 
   UserResponseDTO deleteUser(UUID uuid);
 }

@@ -48,4 +48,10 @@ public class CommonUser implements User {
     this.type = type;
     this.password = password;
   }
+
+  public CommonUser(String login, String email, UserType type) {
+    this.login = login;
+    this.email = email;
+    this.type = type;
+  }
 }
