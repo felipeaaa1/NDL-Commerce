@@ -24,6 +24,6 @@ public class UserResponseFormatterTest {
             UUID.randomUUID(), "baeldung", "baeldung", "COMMON", "2020-12-20T03:00:00.000");
     UserResponseDTO formattedResponse = userResponseFormatter.prepareSuccessView(modelResponse);
 
-    assertThat(formattedResponse.getCreationTime()).isEqualTo("03:00:00");
+    assertThat(formattedResponse.getCreationTime()).isEqualTo("20/12/2020 03:00");
   }
 }

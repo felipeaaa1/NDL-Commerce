@@ -29,7 +29,7 @@
      NULL,
      NOW(),
      TRUE,
-     FALSE,
+     TRUE,
      TRUE,
      TRUE
  );
