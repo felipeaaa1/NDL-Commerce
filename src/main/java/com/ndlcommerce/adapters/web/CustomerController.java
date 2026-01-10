@@ -52,8 +52,9 @@ public class CustomerController {
   public ResponseEntity<?> updateCustomer(
       @PathVariable("id") String id, @RequestBody CustomerRequestDTO requestModel) {
 
-    var result = customerInput.updateCustomer(UUID.fromString(id), requestModel);
-    return ResponseEntity.ok().body(result);
+    var response = customerInput.updateCustomer(UUID.fromString(id), requestModel);
+
+    return ResponseEntity.ok().body(response);
   }
 
   @DeleteMapping("{id}")

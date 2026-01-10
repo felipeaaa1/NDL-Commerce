@@ -88,7 +88,7 @@ public class JpaUser implements UserRegisterDsGateway {
   public UserDataMapper update(UUID uuid, UserDbRequestDTO userDsModel) {
     Optional<UserDataMapper> byId = repository.findById(uuid);
 
-    if (repository.findById(uuid).isEmpty()) {
+    if (byId.isEmpty()) {
       return null;
     }
     UserDataMapper userLogado = securityFilter.obterUsuarioLogado();

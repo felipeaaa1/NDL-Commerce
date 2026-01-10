@@ -18,7 +18,7 @@ public class CommonCustomer implements Customer {
 
   @Override
   public boolean nameIsValid() {
-    return this.name != null && !this.name.isBlank() && this.name.length() >= 4;
+    return this.name != null && !this.name.isBlank() && this.name.length() >= 4 && this.name.length() <= 50;
   }
 
   @Override

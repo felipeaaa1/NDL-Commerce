@@ -7,5 +7,5 @@ public interface JpaCustomerRepository
     extends JpaRepository<CustomerDataMapper, UUID>, CustomCustomerRepository {
   boolean existsByName(String name);
 
-  boolean existsByNameAndIdNot(String name, UUID id);
+    boolean existsByNameAndIdNot(String name, UUID id);
 }

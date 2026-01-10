@@ -14,13 +14,14 @@ public class CustomerResponseFormatter implements CustomerPresenter {
       Map.of(
           "UserNotExistsOrInactive",
               new BusinessException("Usuário não encontrado ou esta inativo"),
-          "NameNotValid", new BusinessException("Nome do Cliente não é válido"));
+              "NameNotValid", new BusinessException("Nome do Cliente não é válido. Nome deve ter entre 4 e 50 caracteres."),
+              "existsByName", new BusinessException("Nome de Cliente já registrado."));
 
   @Override
   public CustomerResponseDTO prepareSuccessView(CustomerResponseDTO customer) {
     if (customer != null) {
       LocalDateTime responseTime = LocalDateTime.parse(customer.getCreationTime());
-      customer.setCreationTime(responseTime.format(DateTimeFormatter.ofPattern("hh:mm:ss")));
+      customer.setCreationTime(responseTime.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")));
       return customer;
     } else {
       return null;
