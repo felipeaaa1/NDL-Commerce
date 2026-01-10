@@ -59,6 +59,7 @@ public class CustomerController {
 
   @DeleteMapping("{id}")
   @PreAuthorize("hasAnyRole('ADMIN')")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
   public ResponseEntity<?> deleteCustomer(@PathVariable("id") String id) {
     CustomerResponseDTO responseDTO = customerInput.deleteCustomer(UUID.fromString(id));
     return ResponseEntity.ok().body(responseDTO);
