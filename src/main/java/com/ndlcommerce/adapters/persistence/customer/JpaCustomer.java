@@ -96,12 +96,13 @@ public class JpaCustomer implements CustomerRegisterDsGateway {
         }
         UserDataMapper userLogado = securityFilter.obterUsuarioLogado();
         UserDataMapper user =
-                userRepository
+                dbRequestDTO.getUserId() != null?                userRepository
                         .findById(dbRequestDTO.getUserId())
                         .orElseThrow(
                                 () ->
                                         new BusinessException(
-                                                "não era para essa excessão ter chegado aqui. coloca no interactor."));
+                                                "não era para essa excessão ter chegado aqui. coloca no interactor.")):
+                null;
 
         CustomerDataMapper customerToUpdate = customerDataMapperOptional.get();
 
@@ -110,7 +111,7 @@ public class JpaCustomer implements CustomerRegisterDsGateway {
         customerToUpdate.setContact(dbRequestDTO.getContact() == null ? customerToUpdate.getContact(): dbRequestDTO.getContact());
         customerToUpdate.setActive(dbRequestDTO.isActive());
         customerToUpdate.setUpdatedBy(userLogado.getId());
-        customerToUpdate.setUser(user);
+        customerToUpdate.setUser(user == null ? customerToUpdate.getUser() : user);
 
         return repository.save(customerToUpdate);
     }

@@ -126,20 +126,11 @@ public class CustomerRegisterInteractor implements CustomerInputBoundary {
 
   @Override
   public CustomerResponseDTO updateCustomer(UUID customerId, CustomerRequestDTO requestModel) {
-      Optional<CustomerDataMapper> customerOptional = customerRegisterDsGateway.findById(customerId);
-      if (customerOptional.isEmpty()) {
-          return customerPresenter.prepareFailView("CustomerNotFound");
-      }
-      Optional<UserDataMapper> userDataMapperOptional = userDsGateway.getById(requestModel.getUserID());
-
-      if (userDataMapperOptional.isEmpty() || !userDataMapperOptional.get().isEnabled()) {
-          return customerPresenter.prepareFailView("UserNotExistsOrInactive");
-      }
-
       Optional<CustomerDataMapper> customerDataMapperOptional = customerRegisterDsGateway.findById(customerId);
       if (customerDataMapperOptional.isEmpty()) {
-          return customerPresenter.prepareFailView("NotFound");
+          return customerPresenter.prepareFailView("CustomerNotFound");
       }
+
       if (customerRegisterDsGateway.existsByNameAndNotID(customerDataMapperOptional.get().getId(), requestModel.getName())) {
           return customerPresenter.prepareFailView("existsByName");
       }
@@ -151,7 +142,7 @@ public class CustomerRegisterInteractor implements CustomerInputBoundary {
                       requestModel.getContact(),
                       requestModel.getAddress());
 
-      if (!customer.nameIsValid()) {
+      if (requestModel.getName() != null && !customer.nameIsValid()) {
           return customerPresenter.prepareFailView("NameNotValid");
       }
 
