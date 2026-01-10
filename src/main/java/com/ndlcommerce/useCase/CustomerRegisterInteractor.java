@@ -36,14 +36,15 @@ public class CustomerRegisterInteractor implements CustomerInputBoundary {
 
   @Override
   public CustomerResponseDTO create(CustomerRequestDTO requestModel) {
-      Optional<UserDataMapper> userDataMapperOptional = userDsGateway.getById(requestModel.getUserID());
+    Optional<UserDataMapper> userDataMapperOptional =
+        userDsGateway.getById(requestModel.getUserID());
 
-      if (userDataMapperOptional.isEmpty() || !userDataMapperOptional.get().isEnabled()) {
-          return customerPresenter.prepareFailView("UserNotExistsOrInactive");
-      }
-      if (customerRegisterDsGateway.existsByName(requestModel.getName())) {
-          return customerPresenter.prepareFailView("existsByName");
-      }
+    if (userDataMapperOptional.isEmpty() || !userDataMapperOptional.get().isEnabled()) {
+      return customerPresenter.prepareFailView("UserNotExistsOrInactive");
+    }
+    if (customerRegisterDsGateway.existsByName(requestModel.getName())) {
+      return customerPresenter.prepareFailView("existsByName");
+    }
 
     Customer customer =
         customerFactory.create(
@@ -68,11 +69,11 @@ public class CustomerRegisterInteractor implements CustomerInputBoundary {
 
     CustomerResponseDTO responseDTO =
         new CustomerResponseDTO(
-                saved.getId(),
-                saved.getUser().getLogin(),
-                saved.getName(),
-                saved.getContact(),
-                saved.getCreatedAt().toString());
+            saved.getId(),
+            saved.getUser().getLogin(),
+            saved.getName(),
+            saved.getContact(),
+            saved.getCreatedAt().toString());
 
     return customerPresenter.prepareSuccessView(responseDTO);
   }
@@ -126,49 +127,60 @@ public class CustomerRegisterInteractor implements CustomerInputBoundary {
 
   @Override
   public CustomerResponseDTO updateCustomer(UUID customerId, CustomerRequestDTO requestModel) {
-      Optional<CustomerDataMapper> customerDataMapperOptional = customerRegisterDsGateway.findById(customerId);
-      if (customerDataMapperOptional.isEmpty()) {
-          return customerPresenter.prepareFailView("CustomerNotFound");
-      }
+    Optional<CustomerDataMapper> customerDataMapperOptional =
+        customerRegisterDsGateway.findById(customerId);
+    if (customerDataMapperOptional.isEmpty()) {
+      return customerPresenter.prepareFailView("NotFound");
+    }
 
-      if (customerRegisterDsGateway.existsByNameAndNotID(customerDataMapperOptional.get().getId(), requestModel.getName())) {
-          return customerPresenter.prepareFailView("existsByName");
-      }
+    if (customerRegisterDsGateway.existsByNameAndNotID(
+        customerDataMapperOptional.get().getId(), requestModel.getName())) {
+      return customerPresenter.prepareFailView("existsByName");
+    }
 
-      Customer customer =
-              customerFactory.create(
-                      requestModel.getUserID(),
-                      requestModel.getName(),
-                      requestModel.getContact(),
-                      requestModel.getAddress());
+    Customer customer =
+        customerFactory.create(
+            requestModel.getUserID(),
+            requestModel.getName(),
+            requestModel.getContact(),
+            requestModel.getAddress());
 
-      if (requestModel.getName() != null && !customer.nameIsValid()) {
-          return customerPresenter.prepareFailView("NameNotValid");
-      }
+    if (requestModel.getName() != null && !customer.nameIsValid()) {
+      return customerPresenter.prepareFailView("NameNotValid");
+    }
 
-      CustomerDbRequestDTO dbRequestDTO =
-              new CustomerDbRequestDTO(
-                      customer.getName(),
-                      customer.getContact(),
-                      customer.getAddress(),
-                      true,
-                      customer.getUserId());
+    CustomerDbRequestDTO dbRequestDTO =
+        new CustomerDbRequestDTO(
+            customer.getName(),
+            customer.getContact(),
+            customer.getAddress(),
+            true,
+            customer.getUserId());
 
-      CustomerDataMapper updated = customerRegisterDsGateway.update(customerDataMapperOptional.get().getId(), dbRequestDTO);
+    CustomerDataMapper updated =
+        customerRegisterDsGateway.update(customerDataMapperOptional.get().getId(), dbRequestDTO);
 
-      CustomerResponseDTO responseDTO =
-              new CustomerResponseDTO(
-                      updated.getId(),
-                      updated.getUser().getLogin(),
-                      updated.getName(),
-                      updated.getContact(),
-                      updated.getCreatedAt().toString());
+    CustomerResponseDTO responseDTO =
+        new CustomerResponseDTO(
+            updated.getId(),
+            updated.getUser().getLogin(),
+            updated.getName(),
+            updated.getContact(),
+            updated.getCreatedAt().toString());
 
-      return customerPresenter.prepareSuccessView(responseDTO);
+    return customerPresenter.prepareSuccessView(responseDTO);
   }
 
   @Override
   public CustomerResponseDTO deleteCustomer(UUID uuid) {
-    return null;
+    Optional<CustomerDataMapper> customerDataMapperOptional =
+        customerRegisterDsGateway.findById(uuid);
+    if (customerDataMapperOptional.isEmpty()) {
+      return customerPresenter.prepareFailView("NotFound");
+    }
+
+    customerRegisterDsGateway.delete(customerDataMapperOptional.get().getId());
+
+    return customerPresenter.prepareSuccessView(null);
   }
 }

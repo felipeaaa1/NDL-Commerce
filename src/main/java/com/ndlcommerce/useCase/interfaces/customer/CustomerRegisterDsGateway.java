@@ -19,7 +19,9 @@ public interface CustomerRegisterDsGateway {
 
   Optional<CustomerDataMapper> findById(UUID uuid);
 
-    boolean existsByNameAndNotID(UUID id, String name);
+  boolean existsByNameAndNotID(UUID id, String name);
 
-    CustomerDataMapper update(UUID id, CustomerDbRequestDTO dbRequestDTO);
+  CustomerDataMapper update(UUID id, CustomerDbRequestDTO dbRequestDTO);
+
+  void delete(UUID id);
 }
