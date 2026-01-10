@@ -10,6 +10,7 @@ import com.ndlcommerce.useCase.request.customer.CustomerDbRequestDTO;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+
 import org.springframework.stereotype.Component;
 
 @Component
@@ -80,4 +81,37 @@ public class JpaCustomer implements CustomerRegisterDsGateway {
   public Optional<CustomerDataMapper> findById(UUID uuid) {
     return repository.findById(uuid);
   }
+
+    @Override
+    public boolean existsByNameAndNotID(UUID id, String name) {
+        return repository.existsByNameAndIdNot(name, id);
+    }
+
+    @Override
+    public CustomerDataMapper update(UUID uuid, CustomerDbRequestDTO dbRequestDTO) {
+        Optional<CustomerDataMapper> customerDataMapperOptional = repository.findById(uuid);
+
+        if (customerDataMapperOptional.isEmpty()) {
+            return null;
+        }
+        UserDataMapper userLogado = securityFilter.obterUsuarioLogado();
+        UserDataMapper user =
+                userRepository
+                        .findById(dbRequestDTO.getUserId())
+                        .orElseThrow(
+                                () ->
+                                        new BusinessException(
+                                                "não era para essa excessão ter chegado aqui. coloca no interactor."));
+
+        CustomerDataMapper customerToUpdate = customerDataMapperOptional.get();
+
+        customerToUpdate.setName(dbRequestDTO.getName() == null ? customerToUpdate.getName(): dbRequestDTO.getName());
+        customerToUpdate.setAddress(dbRequestDTO.getAddress() == null ? customerToUpdate.getAddress(): dbRequestDTO.getAddress());
+        customerToUpdate.setContact(dbRequestDTO.getContact() == null ? customerToUpdate.getContact(): dbRequestDTO.getContact());
+        customerToUpdate.setActive(dbRequestDTO.isActive());
+        customerToUpdate.setUpdatedBy(userLogado.getId());
+        customerToUpdate.setUser(user);
+
+        return repository.save(customerToUpdate);
+    }
 }
