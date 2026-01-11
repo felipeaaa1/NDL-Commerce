@@ -70,13 +70,11 @@ public class NdlCommerceApplication {
     // (controllers já serão achados pelo @SpringBootApplication)
     scanner.scan(
         "com.ndlcommerce.useCase",
-        "com.ndlcommerce.adapters.gateway",
-        "com.ndlcommerce.adapters.presenter"
+        "com.ndlcommerce.adapters.persistence",
         // tinha esquecido a camada de persistencia, com isso não tinha instanciado a
         // UserRegisterInteractor pq não tinha nenhuma classe implementando a UserRegisterDsGateway,
         // que no caso quem ta implementando é a JpaUser.java
         //              ,"com.ndlcommerce.adapters.persistence"
-        ,
         "com.ndlcommerce.entity.factory"
         // NÃO scanneie "controllers" aqui. Deixe o @SpringBootApplication encontrá-los com o
         // @RestController

@@ -1,4 +1,4 @@
-package com.ndlcommerce.adapters.presenter;
+package com.ndlcommerce.adapters.persistence.customer;
 
 import com.ndlcommerce.exception.BusinessException;
 import com.ndlcommerce.exception.EntityAlreadyExistsException;
