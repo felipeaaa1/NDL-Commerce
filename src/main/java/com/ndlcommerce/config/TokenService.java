@@ -20,14 +20,18 @@ public class TokenService {
 
   public String generateToken(UserDataMapper user) {
     try {
-      Algorithm algorithm = Algorithm.HMAC256(secret);
-      String token =
-          JWT.create()
-              .withIssuer("auth-api")
-              .withSubject(user.getLogin())
-              .withExpiresAt(genExpirationDate())
-              .sign(algorithm);
-      return token;
+      if (user.isEmailValidated()) {
+        Algorithm algorithm = Algorithm.HMAC256(secret);
+        String token =
+            JWT.create()
+                .withIssuer("auth-api")
+                .withSubject(user.getLogin())
+                .withExpiresAt(genExpirationDate())
+                .sign(algorithm);
+        return token;
+      } else {
+        throw new BusinessException("Necessário validar o email.");
+      }
     } catch (JWTCreationException exception) {
       System.err.println(exception.toString());
       throw new BusinessException("Erro ao gerar token");

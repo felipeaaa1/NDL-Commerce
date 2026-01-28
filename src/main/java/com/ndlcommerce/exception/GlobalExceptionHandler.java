@@ -112,6 +112,13 @@ public class GlobalExceptionHandler {
         "Conta bloqueada, Por gentileza entre em contato com o suporte.");
   }
 
+  @ExceptionHandler(EmailSendException.class)
+  @ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
+  public ErrorResponseDTO handleEmailSendException(EmailSendException e) {
+    return ErrorResponseDTO.withErrors(
+        "Erro ao enviar email. Por gentileza, tente novamente mais tarde.", List.of());
+  }
+
   @ExceptionHandler(RuntimeException.class)
   @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
   public ErrorResponseDTO handleUnexpected(RuntimeException e) {
