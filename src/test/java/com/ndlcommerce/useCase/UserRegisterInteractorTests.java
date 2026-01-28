@@ -4,10 +4,12 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 import com.ndlcommerce.adapters.persistence.user.UserDataMapper;
+import com.ndlcommerce.config.EmailService;
 import com.ndlcommerce.entity.enums.UserType;
 import com.ndlcommerce.entity.factory.UserFactory;
 import com.ndlcommerce.entity.model.CommonUser;
 import com.ndlcommerce.entity.model.User;
+import com.ndlcommerce.useCase.interfaces.emailValidation.EmailValidationDsGateway;
 import com.ndlcommerce.useCase.interfaces.user.UserPresenter;
 import com.ndlcommerce.useCase.interfaces.user.UserRegisterDsGateway;
 import com.ndlcommerce.useCase.request.user.UserDbRequestDTO;
@@ -24,13 +26,19 @@ public class UserRegisterInteractorTests {
   private UserPresenter userPresenter;
   private UserFactory userFactory;
   private UserRegisterInteractor interactor;
+  private EmailValidationDsGateway emailValidationDsGateway;
+  private EmailService emailService;
 
   @BeforeEach
   void setUp() {
     userDsGateway = mock(UserRegisterDsGateway.class);
     userPresenter = mock(UserPresenter.class);
     userFactory = mock(UserFactory.class);
-    interactor = new UserRegisterInteractor(userDsGateway, userPresenter, userFactory);
+    emailValidationDsGateway = mock(EmailValidationDsGateway.class);
+    emailService = mock(EmailService.class);
+    interactor =
+        new UserRegisterInteractor(
+            userDsGateway, userPresenter, userFactory, emailValidationDsGateway, emailService);
   }
 
   @Test

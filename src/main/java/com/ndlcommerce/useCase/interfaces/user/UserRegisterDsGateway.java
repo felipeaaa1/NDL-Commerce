@@ -24,4 +24,6 @@ public interface UserRegisterDsGateway {
   boolean existsByEmailAndNotId(String email, UUID userId);
 
   void delete(UserDataMapper userDataMapper);
+
+  void validateEmail(UUID uuid);
 }

@@ -71,7 +71,8 @@ public class JpaUser implements UserRegisterDsGateway {
                 "enabled",
                 "accountNonLocked",
                 "accountNonExpired",
-                "credentialsNonExpired")
+                "credentialsNonExpired",
+                "isEmailValidated")
             .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
 
     Example<UserDataMapper> example = Example.of(probe, matcher);
@@ -112,5 +113,18 @@ public class JpaUser implements UserRegisterDsGateway {
   @Override
   public void delete(UserDataMapper userDataMapper) {
     repository.delete(userDataMapper);
+  }
+
+  @Override
+  public void validateEmail(UUID uuid) {
+    Optional<UserDataMapper> byId = repository.findById(uuid);
+
+    if (byId.isEmpty()) {
+      return;
+    }
+
+    UserDataMapper user = byId.get();
+    user.setEmailValidated(true);
+    repository.save(user);
   }
 }
