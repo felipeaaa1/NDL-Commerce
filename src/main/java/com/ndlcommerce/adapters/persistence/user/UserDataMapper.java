@@ -64,6 +64,9 @@ public class UserDataMapper implements UserDetails {
   @Column(name = "credentials_non_expired", nullable = false)
   private boolean credentialsNonExpired = true;
 
+  @Column(name = "is_email_valid", nullable = false)
+  private boolean isEmailValidated = false;
+
   public UserDataMapper(
       String login, String email, UserType type, String password, UUID created_by) {
     this.login = login;

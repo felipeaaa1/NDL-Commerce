@@ -52,12 +52,14 @@ public class CustomerController {
   public ResponseEntity<?> updateCustomer(
       @PathVariable("id") String id, @RequestBody CustomerRequestDTO requestModel) {
 
-    var result = customerInput.updateCustomer(UUID.fromString(id), requestModel);
-    return ResponseEntity.ok().body(result);
+    var response = customerInput.updateCustomer(UUID.fromString(id), requestModel);
+
+    return ResponseEntity.ok().body(response);
   }
 
   @DeleteMapping("{id}")
   @PreAuthorize("hasAnyRole('ADMIN')")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
   public ResponseEntity<?> deleteCustomer(@PathVariable("id") String id) {
     CustomerResponseDTO responseDTO = customerInput.deleteCustomer(UUID.fromString(id));
     return ResponseEntity.ok().body(responseDTO);

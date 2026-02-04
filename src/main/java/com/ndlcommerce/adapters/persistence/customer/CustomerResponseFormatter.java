@@ -1,26 +1,33 @@
-package com.ndlcommerce.adapters.presenter;
+package com.ndlcommerce.adapters.persistence.customer;
 
 import com.ndlcommerce.exception.BusinessException;
+import com.ndlcommerce.exception.EntityAlreadyExistsException;
 import com.ndlcommerce.useCase.interfaces.customer.CustomerPresenter;
 import com.ndlcommerce.useCase.request.customer.CustomerResponseDTO;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class CustomerResponseFormatter implements CustomerPresenter {
 
   private static final Map<String, RuntimeException> ERRORS =
       Map.of(
           "UserNotExistsOrInactive",
-              new BusinessException("Usuário não encontrado ou esta inativo"),
-          "NameNotValid", new BusinessException("Nome do Cliente não é válido"));
+          new BusinessException("Usuário não encontrado ou esta inativo"),
+          "NameNotValid",
+          new BusinessException(
+              "Nome do Cliente não é válido. Nome deve ter entre 4 e 50 caracteres."),
+          "existsByName",
+          new EntityAlreadyExistsException("Nome de Cliente já registrado."),
+          "NotFound",
+          new NoSuchElementException());
 
   @Override
   public CustomerResponseDTO prepareSuccessView(CustomerResponseDTO customer) {
     if (customer != null) {
       LocalDateTime responseTime = LocalDateTime.parse(customer.getCreationTime());
-      customer.setCreationTime(responseTime.format(DateTimeFormatter.ofPattern("hh:mm:ss")));
+      customer.setCreationTime(
+          responseTime.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")));
       return customer;
     } else {
       return null;
@@ -38,6 +45,12 @@ public class CustomerResponseFormatter implements CustomerPresenter {
 
   @Override
   public List<CustomerResponseDTO> prepareListSuccessView(List<CustomerResponseDTO> list) {
+    list.forEach(
+        customer -> {
+          LocalDateTime customerDateTime = LocalDateTime.parse(customer.getCreationTime());
+          customer.setCreationTime(
+              customerDateTime.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")));
+        });
     return list;
   }
 }

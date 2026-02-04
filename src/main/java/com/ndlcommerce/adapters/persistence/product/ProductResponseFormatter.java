@@ -1,4 +1,4 @@
-package com.ndlcommerce.adapters.presenter;
+package com.ndlcommerce.adapters.persistence.product;
 
 import com.ndlcommerce.exception.BusinessException;
 import com.ndlcommerce.exception.EntityAlreadyExistsException;
@@ -25,7 +25,7 @@ public class ProductResponseFormatter implements ProductPresenter {
   @Override
   public ProductResponseDTO prepareSuccessView(ProductResponseDTO product) {
     LocalDateTime date = LocalDateTime.parse(product.getCreatedAt());
-    product.setCreatedAt(date.format(DateTimeFormatter.ofPattern("hh:mm:ss")));
+    product.setCreatedAt(date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")));
     return product;
   }
 

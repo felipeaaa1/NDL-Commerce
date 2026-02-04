@@ -38,3 +38,7 @@ ndlFlywayConfig.conf
 
 .run/
 *.run.xml
+
+
+### arquivo pra rodar java diferente do JAVA_HOME (pc da firma é osso)
+.sdkmanrc

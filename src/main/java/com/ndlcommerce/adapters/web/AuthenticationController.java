@@ -8,6 +8,8 @@ import com.ndlcommerce.entity.enums.UserType;
 import com.ndlcommerce.useCase.interfaces.user.UserInputBoundary;
 import com.ndlcommerce.useCase.request.user.UserRequestDTO;
 import jakarta.validation.Valid;
+import java.io.IOException;
+import java.util.UUID;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -33,9 +35,9 @@ public class AuthenticationController {
     this.tokenService = tokenService;
   }
 
-  //  TODO: tratar UserDetailsService e conta bloqueada
   @PostMapping("/login")
   public ResponseEntity login(@RequestBody @Valid AuthenticationDTO data) {
+
     var userPass = new UsernamePasswordAuthenticationToken(data.login(), data.password());
     var auth = this.authenticationManager.authenticate(userPass);
 
@@ -50,5 +52,20 @@ public class AuthenticationController {
     requestModel.setType(UserType.COMMON);
     var userCreated = userInput.create(requestModel);
     return ResponseEntity.ok().body(userCreated);
+  }
+
+  @PostMapping("/emailValidation/{userID}")
+  @ResponseStatus(HttpStatus.ACCEPTED)
+  public ResponseEntity<?> sendEmailValidate(@PathVariable("userID") String userID)
+      throws IOException {
+    userInput.sendValidationToken(UUID.fromString(userID));
+    return ResponseEntity.ok().build();
+  }
+
+  @GetMapping("/verifyEmail")
+  @ResponseStatus(HttpStatus.ACCEPTED)
+  public ResponseEntity<?> verifyEmail(@RequestParam(name = "token") String token) {
+    userInput.verifyEmail(UUID.fromString(token));
+    return ResponseEntity.ok().build();
   }
 }

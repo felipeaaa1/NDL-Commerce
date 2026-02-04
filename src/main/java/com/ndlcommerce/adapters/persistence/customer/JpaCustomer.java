@@ -80,4 +80,53 @@ public class JpaCustomer implements CustomerRegisterDsGateway {
   public Optional<CustomerDataMapper> findById(UUID uuid) {
     return repository.findById(uuid);
   }
+
+  @Override
+  public boolean existsByNameAndNotID(UUID id, String name) {
+    return repository.existsByNameAndIdNot(name, id);
+  }
+
+  @Override
+  public CustomerDataMapper update(UUID uuid, CustomerDbRequestDTO dbRequestDTO) {
+    Optional<CustomerDataMapper> customerDataMapperOptional = repository.findById(uuid);
+
+    if (customerDataMapperOptional.isEmpty()) {
+      return null;
+    }
+    UserDataMapper userLogado = securityFilter.obterUsuarioLogado();
+    UserDataMapper user =
+        dbRequestDTO.getUserId() != null
+            ? userRepository
+                .findById(dbRequestDTO.getUserId())
+                .orElseThrow(
+                    () ->
+                        new BusinessException(
+                            "não era para essa excessão ter chegado aqui. coloca no interactor."))
+            : null;
+
+    CustomerDataMapper customerToUpdate = customerDataMapperOptional.get();
+
+    customerToUpdate.setName(
+        dbRequestDTO.getName() == null ? customerToUpdate.getName() : dbRequestDTO.getName());
+    customerToUpdate.setAddress(
+        dbRequestDTO.getAddress() == null
+            ? customerToUpdate.getAddress()
+            : dbRequestDTO.getAddress());
+    customerToUpdate.setContact(
+        dbRequestDTO.getContact() == null
+            ? customerToUpdate.getContact()
+            : dbRequestDTO.getContact());
+    customerToUpdate.setActive(dbRequestDTO.isActive());
+    customerToUpdate.setUpdatedBy(userLogado.getId());
+    customerToUpdate.setUser(user == null ? customerToUpdate.getUser() : user);
+
+    return repository.save(customerToUpdate);
+  }
+
+  @SuppressWarnings("OptionalGetWithoutIsPresent")
+  @Override
+  public void delete(UUID id) {
+    Optional<CustomerDataMapper> toBeDeleted = repository.findById(id);
+    repository.delete(toBeDeleted.get());
+  }
 }

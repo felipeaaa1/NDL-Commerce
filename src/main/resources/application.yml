@@ -24,7 +24,7 @@ spring:
     properties:
       hibernate.format_sql: true
       hibernate.default_schema: ecommerce
-#  security:
+  #  security:
 #    oauth2:
 #      client:
 #        registration:
@@ -34,6 +34,9 @@ spring:
   flyway:
     enabled: false
     validate-on-migrate: true
+  sendgrid:
+    api-key: ${SENDGRID_TOKEN:testetoken0101010101}
+
 
   springdoc:
     override-with-generic-response: false
@@ -62,11 +65,16 @@ api:
     token:
       secret: ${TOKEN_SECRET:passkey}
 
+app:
+  domain: ${DOMINIO_APLICACAO:localhost:8080}
+
 ---
 spring:
   config:
     activate:
       on:profile: prod
+    dominio:
+      value: ${DOMINIO_APLICACAO}
   jpa:
     show-sql: true
 
@@ -75,5 +83,8 @@ spring:
   config:
     activate:
       on:profile: hmg
+    dominio:
+      value: ${DOMINIO_APLICACAO:localhost:8080}
+
   jpa:
     show-sql: true

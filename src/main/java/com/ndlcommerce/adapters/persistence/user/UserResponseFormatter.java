@@ -1,4 +1,4 @@
-package com.ndlcommerce.adapters.presenter;
+package com.ndlcommerce.adapters.persistence.user;
 
 import com.ndlcommerce.exception.BusinessException;
 import com.ndlcommerce.exception.EntityAlreadyExistsException;
@@ -15,14 +15,23 @@ import org.springframework.stereotype.Component;
 public class UserResponseFormatter implements UserPresenter {
   private static final Map<String, RuntimeException> ERRORS =
       Map.of(
-          "existsByName", new EntityAlreadyExistsException("login já cadastrado"),
-          "existsByEmail", new EntityAlreadyExistsException("Email já cadastrado"),
+          "existsByName",
+          new EntityAlreadyExistsException("login já cadastrado"),
+          "existsByEmail",
+          new EntityAlreadyExistsException("Email já cadastrado"),
           "passwordIsValid",
-              new BusinessException(
-                  "Senha inválida, senha deve ter no mínimo 5 caracteres, uma letra maiúscula e uma minuscula"),
-          "NotFound", new NoSuchElementException(),
+          new BusinessException(
+              "Senha inválida, senha deve ter no mínimo 5 caracteres, uma letra maiúscula e uma minuscula"),
+          "NotFound",
+          new NoSuchElementException(),
           "nameIsValid",
-              new BusinessException("Login inválido, login deve ter no mínimo 4 characteres"));
+          new BusinessException("Login inválido, login deve ter no mínimo 4 characteres"),
+          "EmailNotValidated",
+          new BusinessException("Usuário com email não validado"),
+          "TokenNotValid",
+          new BusinessException("Este token já foi usado ou esta expirado."),
+          "UserRemoved",
+          new BusinessException("Usuário relacionado à esse token foi excluído ou inativado."));
 
   @Override
   public UserResponseDTO prepareSuccessView(UserResponseDTO response) {
