@@ -9,7 +9,7 @@ import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.security.authentication.LockedException;
+import org.springframework.security.authentication.*;
 import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -93,8 +93,7 @@ public class GlobalExceptionHandler {
   @ExceptionHandler(NoSuchElementException.class)
   public ErrorResponseDTO handleNoSuchElementException(NoSuchElementException e) {
     System.err.println(e.getMessage());
-    return new ErrorResponseDTO(
-        HttpStatus.NOT_FOUND.value(), "Elemento com id fornecido não encontrado", List.of());
+    return ErrorResponseDTO.notFound("Elemento com id fornecido não encontrado");
   }
 
   @ResponseStatus(HttpStatus.FORBIDDEN)
@@ -104,19 +103,34 @@ public class GlobalExceptionHandler {
     return ErrorResponseDTO.forbidden("Usuário sem permissão para essa operação");
   }
 
-  @ResponseStatus(HttpStatus.LOCKED)
-  @ExceptionHandler(LockedException.class)
-  public ErrorResponseDTO handleLockedException(LockedException e) {
-    System.err.println(e.getMessage());
-    return ErrorResponseDTO.locked(
-        "Conta bloqueada, Por gentileza entre em contato com o suporte.");
-  }
-
   @ExceptionHandler(EmailSendException.class)
   @ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
   public ErrorResponseDTO handleEmailSendException(EmailSendException e) {
     return ErrorResponseDTO.withErrors(
         "Erro ao enviar email. Por gentileza, tente novamente mais tarde.", List.of());
+  }
+
+  @ExceptionHandler({
+    BadCredentialsException.class,
+    LockedException.class,
+    CredentialsExpiredException.class,
+    DisabledException.class
+  })
+  @ResponseStatus(HttpStatus.UNAUTHORIZED)
+  public ErrorResponseDTO handleBadCredentialsException(Exception e) {
+    return ErrorResponseDTO.badCredentials(e.getMessage());
+  }
+
+  @ExceptionHandler(InternalAuthenticationServiceException.class)
+  @ResponseStatus(HttpStatus.UNAUTHORIZED)
+  public ErrorResponseDTO handleInternalAuthenticationServiceException(
+      InternalAuthenticationServiceException e) {
+    if (e.getMessage()
+        .contains("UserDetailsService returned null, which is an interface contract violation")) {
+
+      return ErrorResponseDTO.notFound("Usuário não encontrado");
+    }
+    return ErrorResponseDTO.notFound(e.getMessage());
   }
 
   @ExceptionHandler(RuntimeException.class)

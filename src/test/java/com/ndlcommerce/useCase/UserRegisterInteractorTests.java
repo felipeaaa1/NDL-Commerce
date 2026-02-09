@@ -69,4 +69,29 @@ public class UserRegisterInteractorTests {
     verify(userDsGateway, times(1)).save(any(UserDbRequestDTO.class));
     verify(userPresenter, times(1)).prepareSuccessView(any(UserResponseDTO.class));
   }
+
+  @Test
+  void givenExistingEmail_whenCreate_thenReturnFailView() {
+    User user = new CommonUser("baeldung", "baeldung", UserType.COMMON, "Senha1234");
+
+    UserRequestDTO userRequestDTO =
+        new UserRequestDTO(user.getLogin(), user.getType(), user.getEmail(), user.getPassword());
+
+    UserDataMapper fakeSavedUser =
+        new UserDataMapper(
+            user.getLogin(),
+            user.getEmail(),
+            user.getType(),
+            user.getPassword(),
+            UUID.randomUUID());
+
+    when(userDsGateway.existsByLogin(anyString())).thenReturn(false);
+    when(userDsGateway.existsByEmail(anyString())).thenReturn(true);
+
+    interactor.create(userRequestDTO);
+
+    verify(userPresenter, times(1)).prepareFailView(anyString());
+    verify(userDsGateway, times(0)).save(any(UserDbRequestDTO.class));
+    verify(userPresenter, times(0)).prepareSuccessView(any(UserResponseDTO.class));
+  }
 }

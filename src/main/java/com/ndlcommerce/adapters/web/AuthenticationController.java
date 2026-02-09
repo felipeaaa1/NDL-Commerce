@@ -7,6 +7,10 @@ import com.ndlcommerce.config.TokenService;
 import com.ndlcommerce.entity.enums.UserType;
 import com.ndlcommerce.useCase.interfaces.user.UserInputBoundary;
 import com.ndlcommerce.useCase.request.user.UserRequestDTO;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.io.IOException;
 import java.util.UUID;
@@ -18,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("auth")
+@Tag(name = "Autorização")
 public class AuthenticationController {
 
   private final UserInputBoundary userInput;
@@ -36,6 +41,15 @@ public class AuthenticationController {
   }
 
   @PostMapping("/login")
+  @Operation(
+      summary = "Logar",
+      description = "End-point que retorna JWT token usado para autenticar na aplicação")
+  @ApiResponses({
+    @ApiResponse(responseCode = "200", description = "Sucesso ao gerar o token"),
+    @ApiResponse(responseCode = "401", description = "Usuário inexistente ou senha inválida"),
+    @ApiResponse(responseCode = "404", description = "Usuário não encontrado"),
+    @ApiResponse(responseCode = "406", description = "Erro de leitura do JSON"),
+  })
   public ResponseEntity login(@RequestBody @Valid AuthenticationDTO data) {
 
     var userPass = new UsernamePasswordAuthenticationToken(data.login(), data.password());
@@ -48,12 +62,35 @@ public class AuthenticationController {
 
   @PostMapping("/register")
   @ResponseStatus(HttpStatus.CREATED)
+  @Operation(
+      summary = "Registrar",
+      description = "Registrar usuários sem necessidade de usuário de criação")
+  @ApiResponses({
+    @ApiResponse(responseCode = "201", description = "Usuário criado com sucesso"),
+    @ApiResponse(responseCode = "406", description = "Erro de leitura do JSON"),
+    @ApiResponse(
+        responseCode = "406",
+        description =
+            "Valor inválido para o campo 'type': 'teste'. Valores permitidos: [COMMON, ADMIN]"),
+    @ApiResponse(responseCode = "409", description = "Email já cadastrado"),
+    @ApiResponse(responseCode = "422", description = "não deve estar em branco")
+  })
   public ResponseEntity<?> create(@Valid @RequestBody UserRequestDTO requestModel) {
     requestModel.setType(UserType.COMMON);
     var userCreated = userInput.create(requestModel);
-    return ResponseEntity.ok().body(userCreated);
+    return ResponseEntity.created(null).body(userCreated);
   }
 
+  @Operation(
+      summary = "Enviar Email de validação",
+      description = "Enviar email com link de validação contendo token UUID")
+  @ApiResponses({
+    @ApiResponse(responseCode = "200", description = "E-mail enviado com sucesso"),
+    @ApiResponse(
+        responseCode = "400",
+        description =
+            "ID com formato inesperado. Era esperado um UUID (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)")
+  })
   @PostMapping("/emailValidation/{userID}")
   @ResponseStatus(HttpStatus.ACCEPTED)
   public ResponseEntity<?> sendEmailValidate(@PathVariable("userID") String userID)
@@ -62,6 +99,16 @@ public class AuthenticationController {
     return ResponseEntity.ok().build();
   }
 
+  @Operation(
+      summary = "Validar Email",
+      description = "Endpoint para apontar email valido e colocar token como usado")
+  @ApiResponses({
+    @ApiResponse(responseCode = "200", description = "E-mail enviado com sucesso"),
+    @ApiResponse(
+        responseCode = "400",
+        description =
+            "ID com formato inesperado. Era esperado um UUID (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)")
+  })
   @GetMapping("/verifyEmail")
   @ResponseStatus(HttpStatus.ACCEPTED)
   public ResponseEntity<?> verifyEmail(@RequestParam(name = "token") String token) {

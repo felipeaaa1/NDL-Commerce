@@ -6,7 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 public interface JpaUserRepository extends JpaRepository<UserDataMapper, UUID> {
 
-  UserDetails findByLogin(String name);
+  UserDetails findByLoginAndEnabledIsTrue(String name);
 
   Boolean existsByLogin(String name);
 

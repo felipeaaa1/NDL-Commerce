@@ -55,17 +55,16 @@ public class SecurityConfiguration {
   }
 
   @Bean
-  public WebSecurityCustomizer webSecurityCustomizer (){
-    return  web -> {
-      web.ignoring().requestMatchers(
+  public WebSecurityCustomizer webSecurityCustomizer() {
+    return web -> {
+      web.ignoring()
+          .requestMatchers(
               "/v2/api-docs/**",
               "/v3/api-docs/**",
               "/swagger-resources/**",
               "/swagger-ui.html",
               "/swagger-ui/**",
-              "/webjars/**"
-
-      );
+              "/webjars/**");
     };
   }
 }

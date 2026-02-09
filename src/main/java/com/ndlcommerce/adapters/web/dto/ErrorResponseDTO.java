@@ -28,4 +28,12 @@ public record ErrorResponseDTO(int status, String message, List<ErrorFieldDTO> e
   public static ErrorResponseDTO locked(String message) {
     return new ErrorResponseDTO(HttpStatus.LOCKED.value(), message, List.of());
   }
+
+  public static ErrorResponseDTO badCredentials(String message) {
+    return new ErrorResponseDTO(HttpStatus.UNAUTHORIZED.value(), message, List.of());
+  }
+
+  public static ErrorResponseDTO notFound(String message) {
+    return new ErrorResponseDTO(HttpStatus.NOT_FOUND.value(), message, List.of());
+  }
 }

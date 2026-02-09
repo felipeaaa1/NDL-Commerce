@@ -33,7 +33,7 @@ public class SecurityFilter extends OncePerRequestFilter {
     if (token != null) {
       String login = tokenService.validateToken(token);
       if (login != null) {
-        var user = userRepository.findByLogin(login);
+        var user = userRepository.findByLoginAndEnabledIsTrue(login);
         var authentication =
             new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -51,7 +51,7 @@ public class SecurityFilter extends OncePerRequestFilter {
   public UserDataMapper obterUsuarioLogado() {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     if (authentication != null)
-      return (UserDataMapper) userRepository.findByLogin(authentication.getName());
+      return (UserDataMapper) userRepository.findByLoginAndEnabledIsTrue(authentication.getName());
 
     return null;
   }
