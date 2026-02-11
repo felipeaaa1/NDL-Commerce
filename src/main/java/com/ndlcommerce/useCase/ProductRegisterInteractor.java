@@ -1,8 +1,8 @@
 package com.ndlcommerce.useCase;
 
 import com.ndlcommerce.adapters.persistence.product.ProductDataMapper;
-import com.ndlcommerce.entity.factory.ProductFactory;
-import com.ndlcommerce.entity.model.Product;
+import com.ndlcommerce.entity.factory.interfaces.ProductFactory;
+import com.ndlcommerce.entity.model.interfaces.Product;
 import com.ndlcommerce.useCase.interfaces.product.ProductInputBoundary;
 import com.ndlcommerce.useCase.interfaces.product.ProductPresenter;
 import com.ndlcommerce.useCase.interfaces.product.ProductRegisterDsGateway;

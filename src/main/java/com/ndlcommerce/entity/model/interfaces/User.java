@@ -1,4 +1,4 @@
-package com.ndlcommerce.entity.model;
+package com.ndlcommerce.entity.model.interfaces;
 
 import com.ndlcommerce.entity.enums.UserType;
 

@@ -1,7 +1,8 @@
-package com.ndlcommerce.entity.factory;
+package com.ndlcommerce.entity.factory.implementation;
 
-import com.ndlcommerce.entity.model.CommonCustomer;
-import com.ndlcommerce.entity.model.Customer;
+import com.ndlcommerce.entity.factory.interfaces.CustomerFactory;
+import com.ndlcommerce.entity.model.implementation.CommonCustomer;
+import com.ndlcommerce.entity.model.interfaces.Customer;
 import java.util.UUID;
 
 public class CommonCustomerFactoryImp implements CustomerFactory {

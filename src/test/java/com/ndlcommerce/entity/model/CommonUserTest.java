@@ -3,6 +3,8 @@ package com.ndlcommerce.entity.model;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.ndlcommerce.entity.enums.UserType;
+import com.ndlcommerce.entity.model.implementation.CommonUser;
+import com.ndlcommerce.entity.model.interfaces.User;
 import org.junit.jupiter.api.Test;
 
 class CommonUserTest {

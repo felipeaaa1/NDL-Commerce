@@ -1,6 +1,6 @@
-package com.ndlcommerce.entity.factory;
+package com.ndlcommerce.entity.factory.interfaces;
 
-import com.ndlcommerce.entity.model.Customer;
+import com.ndlcommerce.entity.model.interfaces.Customer;
 import java.util.UUID;
 
 public interface CustomerFactory {

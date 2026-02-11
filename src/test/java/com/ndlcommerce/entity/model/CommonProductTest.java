@@ -2,6 +2,8 @@ package com.ndlcommerce.entity.model;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.ndlcommerce.entity.model.implementation.CommonProduct;
+import com.ndlcommerce.entity.model.interfaces.Product;
 import org.junit.jupiter.api.Test;
 
 class CommonProductTest {

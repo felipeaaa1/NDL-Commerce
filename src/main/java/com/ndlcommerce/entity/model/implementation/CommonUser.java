@@ -1,6 +1,8 @@
-package com.ndlcommerce.entity.model;
+package com.ndlcommerce.entity.model.implementation;
 
 import com.ndlcommerce.entity.enums.UserType;
+import com.ndlcommerce.entity.model.interfaces.User;
+
 import java.util.regex.Pattern;
 
 public class CommonUser implements User {

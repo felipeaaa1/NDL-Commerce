@@ -1,8 +1,9 @@
-package com.ndlcommerce.entity.factory;
+package com.ndlcommerce.entity.factory.implementation;
 
 import com.ndlcommerce.entity.enums.UserType;
-import com.ndlcommerce.entity.model.CommonUser;
-import com.ndlcommerce.entity.model.User;
+import com.ndlcommerce.entity.factory.interfaces.UserFactory;
+import com.ndlcommerce.entity.model.implementation.CommonUser;
+import com.ndlcommerce.entity.model.interfaces.User;
 
 public class CommonUserFactoryImp implements UserFactory {
   @Override

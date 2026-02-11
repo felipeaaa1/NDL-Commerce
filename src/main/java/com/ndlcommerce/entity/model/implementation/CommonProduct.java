@@ -1,4 +1,6 @@
-package com.ndlcommerce.entity.model;
+package com.ndlcommerce.entity.model.implementation;
+
+import com.ndlcommerce.entity.model.interfaces.Product;
 
 public class CommonProduct implements Product {
 
